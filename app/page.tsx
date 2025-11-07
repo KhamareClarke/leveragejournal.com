@@ -108,11 +108,11 @@ export default function HomePage() {
                 {/* Power Headline */}
                 <div className="space-y-6">
                   <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                    <span className="text-white">90 Days to</span>
+                    <span className="text-white">The</span>
                     <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Life-Changing</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Leverage</span>
                     <br />
-                    <span className="text-white">Results</span>
+                    <span className="text-white">Journal</span>
                   </h1>
                   <p className="text-2xl text-gray-300 font-medium max-w-2xl">
                     The proven system that turns your biggest goals into inevitable wins.
