@@ -122,19 +122,31 @@ export default function CookieConsent() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 bg-black/95 backdrop-blur-xl border-t border-yellow-600/30 shadow-2xl">
-      <div className="w-full px-6 py-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center space-x-3 flex-1 min-w-0">
-              <Cookie className="w-6 h-6 text-yellow-400 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-white text-sm">
-                  <strong>🍪 We Value Your Privacy</strong> - We use cookies to enhance your experience. 
-                  <Link href="/cookies" className="text-yellow-400 hover:text-yellow-300 underline ml-1">
-                    Learn more
-                  </Link>
-                </p>
+    <>
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+      
+      {/* Cookie Banner */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
+        <Card className="max-w-4xl mx-auto bg-neutral-900/95 border border-yellow-600/30 backdrop-blur-xl">
+          {!showSettings ? (
+            // Main Banner
+            <div className="p-6">
+              <div className="flex items-start space-x-4">
+                <Cookie className="w-8 h-8 text-yellow-400 flex-shrink-0 mt-1" />
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    🍪 We Value Your Privacy
+                  </h3>
+                  <p className="text-gray-300 mb-4 leading-relaxed">
+                    We use cookies to enhance your experience, provide personalized content, and analyze our traffic. 
+                    By clicking "Accept All", you consent to our use of cookies. You can customize your preferences or learn more in our{' '}
+                    <Link href="/cookies" className="text-yellow-400 hover:text-yellow-300 underline">
+                      Cookie Policy
+                    </Link>.
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-3">
                     <Button
                       onClick={acceptAll}
                       className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold"
