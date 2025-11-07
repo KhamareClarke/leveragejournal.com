@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Cormorant_Garamond } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/contexts/AuthContext';
-import CookieConsent from '@/components/CookieConsent';
+import SimpleCookieConsent from '@/components/SimpleCookieConsent';
 import SEOSchemas from '@/components/SEOSchemas';
 
 const inter = Inter({ 
@@ -274,7 +274,7 @@ export default function RootLayout({
           <Toaster />
           
           {/* GDPR Cookie Consent */}
-          <CookieConsent />
+          <SimpleCookieConsent />
         </AuthProvider>
         
         {/* Service Worker Registration */}
