@@ -1,7 +1,27 @@
 {
   "name": "leveragejournal",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "90-Day Transformation System - Premium goal setting journal with mobile app integration",
+  "author": "Leverage Journal Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leveragejournal/leveragejournal.git"
+  },
+  "homepage": "https://leveragejournal.com",
+  "bugs": {
+    "url": "https://github.com/leveragejournal/leveragejournal/issues"
+  },
+  "keywords": [
+    "goal-setting",
+    "productivity",
+    "journal",
+    "transformation",
+    "90-day-system",
+    "habit-formation",
+    "personal-development"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
