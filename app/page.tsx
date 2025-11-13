@@ -242,16 +242,16 @@ export default function Home() {
       </nav>
 
       {/* 🟡 Hero Section - Fully Mobile Responsive */}
-      <section className="relative min-h-screen flex items-center justify-center pt-24 sm:pt-28 md:pt-32 pb-12 md:pb-16">
+      <section className="relative min-h-screen flex items-center justify-center pt-16 sm:pt-20 md:pt-32 pb-12 md:pb-16">
         {/* Clean, Subtle Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-600/5 via-transparent to-transparent"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid lg:grid-cols-2 gap-6 md:gap-12 items-center relative z-10">
           {/* Ultra Compact Content Spacing - Mobile Optimized */}
-          <div className="text-center lg:text-left space-y-3 md:space-y-4">
+          <div className="text-center lg:text-left space-y-2 md:space-y-4">
             {/* Trust Badge - Mobile Optimized */}
-            <div className="flex justify-center lg:justify-start">
+            <div className="flex justify-center lg:justify-start mb-1 md:mb-0">
               <div className="inline-flex items-center space-x-1.5 md:space-x-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full px-3 md:px-5 py-1.5 md:py-2 backdrop-blur-sm">
                 <div className="flex items-center space-x-0.5 md:space-x-1">
                   {[...Array(5)].map((_, i) => (
@@ -263,13 +263,13 @@ export default function Home() {
             </div>
 
             {/* Emotional Hook - Mobile Optimized */}
-            <div className="space-y-2 md:space-y-3">
+            <div className="space-y-1.5 md:space-y-3">
               <p className="text-sm md:text-base text-red-300 font-medium leading-relaxed">
                 Tired of setting goals that never stick? 😔
               </p>
               
               {/* Main Headline - Mobile Optimized */}
-              <div className="space-y-1.5 md:space-y-2">
+              <div className="space-y-1 md:space-y-2">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                   <span className="block bg-gradient-to-r from-yellow-200 to-yellow-400 bg-clip-text text-transparent">
                     LEVERAGE
@@ -279,7 +279,7 @@ export default function Home() {
                   </span>
                 </h1>
                 
-                <div className="space-y-1.5 md:space-y-2">
+                <div className="space-y-1 md:space-y-2">
                   <p className="text-base md:text-lg lg:text-xl text-yellow-100 font-light">Transform Your Life in 90 Days</p>
                   <div className="w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full mx-auto lg:mx-0"></div>
                 </div>
@@ -287,7 +287,7 @@ export default function Home() {
             </div>
 
             {/* Value Proposition - Mobile Optimized */}
-            <div className="py-1 md:py-2">
+            <div className="py-0.5 md:py-2">
               <p className="text-sm md:text-base lg:text-lg text-gray-100 max-w-2xl leading-relaxed mx-auto lg:mx-0 px-2 md:px-0">
                 <span className="text-yellow-300 font-semibold">Stop making promises you don't keep.</span> This isn't another planner that collects dust. 
                 It's the <span className="text-yellow-300 font-semibold">scientifically-backed system</span> that <span className="text-yellow-300 font-semibold">10,000+ people</span> used to transform their lives in 90 days.
