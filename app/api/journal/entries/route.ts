@@ -110,8 +110,35 @@ export async function POST(request: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // Calculate day_number if not provided (fallback to 1)
-    const calculatedDayNumber = day_number || 1;
+    // Always calculate day_number based on first entry date (program start)
+    // This ensures consistency even if frontend sends incorrect day_number
+    let calculatedDayNumber = 1;
+    
+    // Get the first entry date (program start date)
+    const { data: firstEntry } = await supabase
+      .from('journal_entries')
+      .select('entry_date')
+      .eq('user_id', user.id)
+      .order('entry_date', { ascending: true })
+      .limit(1)
+      .single();
+    
+    if (firstEntry?.entry_date) {
+      // Calculate days since program start
+      const [year, month, day] = firstEntry.entry_date.split('-').map(Number);
+      const programStartDate = new Date(year, month - 1, day);
+      programStartDate.setHours(0, 0, 0, 0);
+      
+      const [entryYear, entryMonth, entryDay] = entry_date.split('-').map(Number);
+      const entryDateObj = new Date(entryYear, entryMonth - 1, entryDay);
+      entryDateObj.setHours(0, 0, 0, 0);
+      
+      const daysSinceStart = Math.floor((entryDateObj.getTime() - programStartDate.getTime()) / (1000 * 60 * 60 * 24));
+      calculatedDayNumber = Math.min(90, Math.max(1, daysSinceStart + 1));
+    } else {
+      // No entries yet, this is day 1
+      calculatedDayNumber = 1;
+    }
 
     // Prepare the entry data
     const entryData: any = {
