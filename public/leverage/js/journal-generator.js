@@ -332,7 +332,7 @@ function generateChapter1Vision() {
         
         <div class="qr-enhanced">
             <a href="/dashboard/goals" target="_blank" style="display: block; text-decoration: none;">
-                <div id="qr-code-chapter1" style="width: 150px; height: 150px; margin: 0 auto; cursor: pointer; background: white; padding: 8px; border-radius: 8px;"></div>
+                <div id="qr-code-chapter1" style="width: 100px; height: 100px; margin: 0 auto; cursor: pointer; background: white; padding: 6px; border-radius: 8px;"></div>
             </a>
             <div class="qr-caption">Access Vision Board</div>
         </div>
@@ -976,7 +976,7 @@ function generateChapter2Plan() {
         
         <div class="qr-enhanced">
             <a href="/dashboard/daily" target="_blank" style="display: block; text-decoration: none;">
-                <div id="qr-code-chapter2" style="width: 150px; height: 150px; margin: 0 auto; cursor: pointer; background: white; padding: 8px; border-radius: 8px;"></div>
+                <div id="qr-code-chapter2" style="width: 100px; height: 100px; margin: 0 auto; cursor: pointer; background: white; padding: 6px; border-radius: 8px;"></div>
             </a>
             <div class="qr-caption">Access Plan Dashboard</div>
         </div>
@@ -1208,7 +1208,7 @@ function generateChapter3Do() {
         
         <div class="qr-enhanced">
             <a href="/dashboard" target="_blank" style="display: block; text-decoration: none;">
-                <div id="qr-code-chapter3" style="width: 150px; height: 150px; margin: 0 auto; cursor: pointer; background: white; padding: 8px; border-radius: 8px;"></div>
+                <div id="qr-code-chapter3" style="width: 100px; height: 100px; margin: 0 auto; cursor: pointer; background: white; padding: 6px; border-radius: 8px;"></div>
             </a>
             <div class="qr-caption">Sync with AI CoPilot</div>
         </div>
@@ -1668,7 +1668,7 @@ function generateChapter4Review() {
         
         <div class="qr-enhanced">
             <a href="/dashboard?tab=stats" target="_blank" style="display: block; text-decoration: none;">
-                <div id="qr-code-chapter4" style="width: 150px; height: 150px; margin: 0 auto; cursor: pointer; background: white; padding: 8px; border-radius: 8px;"></div>
+                <div id="qr-code-chapter4" style="width: 100px; height: 100px; margin: 0 auto; cursor: pointer; background: white; padding: 6px; border-radius: 8px;"></div>
             </a>
             <div class="qr-caption">Access Progress Analytics</div>
         </div>
@@ -1763,7 +1763,7 @@ function generateChapter5Legacy() {
         
         <div class="qr-enhanced">
             <a href="/dashboard" target="_blank" style="display: block; text-decoration: none;">
-                <div id="qr-code-chapter5" style="width: 150px; height: 150px; margin: 0 auto; cursor: pointer; background: white; padding: 8px; border-radius: 8px;"></div>
+                <div id="qr-code-chapter5" style="width: 100px; height: 100px; margin: 0 auto; cursor: pointer; background: white; padding: 6px; border-radius: 8px;"></div>
             </a>
             <div class="qr-caption">Join Builder's Guild</div>
         </div>
@@ -2261,36 +2261,36 @@ function generateQRCodes() {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard/goals`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter1.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter1.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 }
                 if (qrChapter2) {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard/daily`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter2.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter2.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 }
                 if (qrChapter3) {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter3.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter3.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 }
                 if (qrChapter4) {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard?tab=stats`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter4.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter4.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 }
                 if (qrChapter5) {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter5.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter5.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 }
             }
             return;
@@ -2306,8 +2306,8 @@ function generateQRCodes() {
             qrChapter1.appendChild(canvas);
             
             QRCode.toCanvas(canvas, qrUrl.trim(), {
-                width: 150,
-                margin: 3,
+                width: 100,
+                margin: 2,
                 color: {
                     dark: '#000000',
                     light: '#FFFFFF'
@@ -2320,12 +2320,12 @@ function generateQRCodes() {
                     const currentOrigin = window.location.origin;
                     const targetUrl = `${currentOrigin}/dashboard/goals`;
                     const qrData = encodeURIComponent(targetUrl);
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter1.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter1.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 } else {
                     canvas.style.borderRadius = '8px';
-                    canvas.style.width = '150px';
-                    canvas.style.height = '150px';
+                    canvas.style.width = '100px';
+                    canvas.style.height = '100px';
                     canvas.style.display = 'block';
                     console.log('✅ QR code generated successfully for Chapter 1. URL:', qrUrl);
                 }
@@ -2356,8 +2356,8 @@ function generateQRCodes() {
                     const currentOrigin2 = window.location.origin;
                     const targetUrl2 = `${currentOrigin2}/dashboard/daily`;
                     const qrData2 = encodeURIComponent(targetUrl2);
-                    const qrApiUrl2 = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData2}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter2.innerHTML = `<img src="${qrApiUrl2}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl2 = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData2}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter2.innerHTML = `<img src="${qrApiUrl2}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 } else {
                     canvas2.style.borderRadius = '8px';
                     canvas2.style.width = '150px';
@@ -2392,8 +2392,8 @@ function generateQRCodes() {
                     const currentOrigin3 = window.location.origin;
                     const targetUrl3 = `${currentOrigin3}/dashboard`;
                     const qrData3 = encodeURIComponent(targetUrl3);
-                    const qrApiUrl3 = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData3}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter3.innerHTML = `<img src="${qrApiUrl3}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl3 = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData3}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter3.innerHTML = `<img src="${qrApiUrl3}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 } else {
                     canvas3.style.borderRadius = '8px';
                     canvas3.style.width = '150px';
@@ -2428,8 +2428,8 @@ function generateQRCodes() {
                     const currentOrigin4 = window.location.origin;
                     const targetUrl4 = `${currentOrigin4}/dashboard?tab=stats`;
                     const qrData4 = encodeURIComponent(targetUrl4);
-                    const qrApiUrl4 = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData4}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter4.innerHTML = `<img src="${qrApiUrl4}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl4 = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData4}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter4.innerHTML = `<img src="${qrApiUrl4}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 } else {
                     canvas4.style.borderRadius = '8px';
                     canvas4.style.width = '150px';
@@ -2464,8 +2464,8 @@ function generateQRCodes() {
                     const currentOrigin5 = window.location.origin;
                     const targetUrl5 = `${currentOrigin5}/dashboard`;
                     const qrData5 = encodeURIComponent(targetUrl5);
-                    const qrApiUrl5 = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData5}&bgcolor=FFFFFF&color=000000`;
-                    qrChapter5.innerHTML = `<img src="${qrApiUrl5}" alt="QR Code" style="width: 150px; height: 150px; border-radius: 8px; display: block;" />`;
+                    const qrApiUrl5 = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData5}&bgcolor=FFFFFF&color=000000`;
+                    qrChapter5.innerHTML = `<img src="${qrApiUrl5}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 8px; display: block;" />`;
                 } else {
                     canvas5.style.borderRadius = '8px';
                     canvas5.style.width = '150px';

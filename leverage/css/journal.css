@@ -740,10 +740,10 @@ p {
     background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
     border: 2px solid var(--gold);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center;
-    margin: 2rem auto;
-    max-width: 200px;
+    margin: 1.5rem auto;
+    max-width: 150px;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1136,10 +1136,10 @@ html {
     background: linear-gradient(135deg, var(--black-card) 0%, var(--gold-dark) 10%, var(--black-card) 100%);
     border: 2px solid var(--gold);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center;
-    margin: 2rem auto;
-    max-width: 250px;
+    margin: 1.5rem auto;
+    max-width: 150px;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
 }
 
@@ -1736,14 +1736,14 @@ h3 {
 
 /* QR PLACEHOLDER */
 .qr-placeholder {
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
     border: 1.5pt solid var(--gold);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 18px auto;
+    margin: 12px auto;
     background: var(--black-soft);
     position: relative;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
@@ -2231,14 +2231,14 @@ h3 {
 
     /* QR codes */
     .qr-enhanced {
-        max-width: 180px !important;
-        padding: 1rem !important;
-        margin: 1.5rem auto !important;
+        max-width: 120px !important;
+        padding: 0.75rem !important;
+        margin: 1rem auto !important;
     }
 
     .qr-placeholder {
-        width: 120px !important;
-        height: 120px !important;
+        width: 80px !important;
+        height: 80px !important;
     }
 
     /* Score grid */
@@ -2439,8 +2439,8 @@ h3 {
     }
 
     .qr-enhanced {
-        max-width: 150px !important;
-        padding: 0.75rem !important;
+        max-width: 100px !important;
+        padding: 0.5rem !important;
     }
 
     .score-grid {
