@@ -1,0 +1,17 @@
+{
+  "crons": [
+    {
+      "path": "/api/reminders/journal",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/reminders/goals",
+      "schedule": "0 19 * * *"
+    },
+    {
+      "path": "/api/reminders/weekly-review",
+      "schedule": "0 20 * * 0"
+    }
+  ]
+}
+

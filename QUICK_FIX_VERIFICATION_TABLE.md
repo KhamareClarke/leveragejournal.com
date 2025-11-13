@@ -46,3 +46,4 @@ Just copy the entire file content and paste into Supabase SQL Editor.
 
 
 
+
