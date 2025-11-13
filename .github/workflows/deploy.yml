@@ -36,11 +36,14 @@ jobs:
         # TODO: Add your SUPABASE_SERVICE_ROLE_KEY here or use secrets
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       
-    - name: Deploy to Vercel
-      if: github.ref == 'refs/heads/main'
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets.PROJECT_ID }}
-        vercel-args: '--prod'
+    # Vercel deployment is handled via Vercel CLI
+    # Uncomment below if you want GitHub Actions to deploy to Vercel
+    # You'll need to add VERCEL_TOKEN, ORG_ID, and PROJECT_ID to GitHub Secrets
+    # - name: Deploy to Vercel
+    #   if: github.ref == 'refs/heads/main'
+    #   uses: amondnet/vercel-action@v25
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+    #     vercel-org-id: ${{ secrets.ORG_ID }}
+    #     vercel-project-id: ${{ secrets.PROJECT_ID }}
+    #     vercel-args: '--prod'
