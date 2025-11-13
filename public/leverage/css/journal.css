@@ -2230,16 +2230,44 @@ h3 {
         font-size: 0.6rem !important;
     }
 
-    /* QR codes */
+    /* QR codes - larger on mobile for better scanning */
     .qr-enhanced {
-        max-width: 120px !important;
-        padding: 0.75rem !important;
-        margin: 1rem auto !important;
+        max-width: 180px !important;
+        padding: 1.25rem !important;
+        margin: 1.5rem auto !important;
+        border-width: 3px !important;
+    }
+
+    .qr-enhanced #qr-code-chapter1,
+    .qr-enhanced #qr-code-chapter2,
+    .qr-enhanced #qr-code-chapter3,
+    .qr-enhanced #qr-code-chapter4,
+    .qr-enhanced #qr-code-chapter5 {
+        width: 140px !important;
+        height: 140px !important;
+        max-width: 140px !important;
+        max-height: 140px !important;
+        padding: 8px !important;
+    }
+
+    .qr-enhanced canvas,
+    .qr-enhanced img {
+        width: 140px !important;
+        height: 140px !important;
+        max-width: 140px !important;
+        max-height: 140px !important;
+        object-fit: contain !important;
+    }
+
+    .qr-caption {
+        font-size: 0.85rem !important;
+        margin-top: 0.75rem !important;
+        padding: 0 0.5rem !important;
     }
 
     .qr-placeholder {
-        width: 80px !important;
-        height: 80px !important;
+        width: 120px !important;
+        height: 120px !important;
     }
 
     /* Score grid */
@@ -2440,8 +2468,36 @@ h3 {
     }
 
     .qr-enhanced {
-        max-width: 100px !important;
-        padding: 0.5rem !important;
+        max-width: 160px !important;
+        padding: 1rem !important;
+        margin: 1.25rem auto !important;
+        border-width: 2.5px !important;
+    }
+
+    .qr-enhanced #qr-code-chapter1,
+    .qr-enhanced #qr-code-chapter2,
+    .qr-enhanced #qr-code-chapter3,
+    .qr-enhanced #qr-code-chapter4,
+    .qr-enhanced #qr-code-chapter5 {
+        width: 120px !important;
+        height: 120px !important;
+        max-width: 120px !important;
+        max-height: 120px !important;
+        padding: 6px !important;
+    }
+
+    .qr-enhanced canvas,
+    .qr-enhanced img {
+        width: 120px !important;
+        height: 120px !important;
+        max-width: 120px !important;
+        max-height: 120px !important;
+        object-fit: contain !important;
+    }
+
+    .qr-caption {
+        font-size: 0.8rem !important;
+        margin-top: 0.5rem !important;
     }
 
     .score-grid {
