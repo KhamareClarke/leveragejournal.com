@@ -1,30 +1,70 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { BookOpen, ArrowLeft, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SignIn() {
-  const { signIn, loading } = useAuth();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Check if user just registered
+    const registered = searchParams.get('registered');
+    const registeredEmail = searchParams.get('email');
+    
+    if (registered === 'true' && registeredEmail) {
+      setSuccessMessage(`Account created! Please check your email (${registeredEmail}) to confirm your account before signing in.`);
+      setEmail(registeredEmail);
+      // Clear the URL params
+      router.replace('/auth/signin', { scroll: false });
+    }
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
     try {
-      await signIn(email, password);
-      router.push('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password');
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Sign in request timed out. Please try again.')), 15000)
+      );
+      
+      await Promise.race([
+        signIn(email, password),
+        timeoutPromise
+      ]);
+      
+      // Immediately redirect - don't wait for profile loading
+      // The dashboard will handle loading states
+      const redirect = searchParams.get('redirect') || searchParams.get('next');
+      const referrer = typeof window !== 'undefined' ? document.referrer : '';
+      
+      // If coming from journal page, redirect back there
+      if (redirect === '/journal' || referrer.includes('/journal')) {
+        router.push('/journal');
+      } else {
+        router.push('/dashboard');
+      }
+      
+      // Don't reset loading here - let redirect happen
+    } catch (err: any) {
+      console.error('Sign in error:', err);
+      setError(err.message || 'Invalid email or password. Please try again.');
+      setIsLoading(false);
     }
   };
 
@@ -50,6 +90,27 @@ export default function SignIn() {
         {/* Sign In Form */}
         <Card className="bg-neutral-900/50 border border-yellow-600/20 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {successMessage && (
+              <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-green-300 text-sm">{successMessage}</p>
+                    <div className="mt-2 space-y-1">
+                      <Link 
+                        href="/auth/resend-confirmation" 
+                        className="text-yellow-400 hover:text-yellow-300 text-xs inline-block underline mr-3"
+                      >
+                        Didn't receive email? Resend it
+                      </Link>
+                      <p className="text-yellow-200/70 text-xs">
+                        Or try signing in directly - email confirmation might be disabled
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {error && (
               <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
                 <p className="text-red-300 text-sm">{error}</p>
@@ -99,20 +160,22 @@ export default function SignIn() {
 
             <Button
               type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold py-3 transition-all duration-300"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold py-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-400">
-              Don't have an account?{' '}
-              <Link href="/auth/signup" className="text-yellow-400 hover:text-yellow-300 font-medium">
-                Sign up here
-              </Link>
-            </p>
+          <div className="mt-6 space-y-3">
+            <div className="text-center">
+              <p className="text-gray-400">
+                Don't have an account?{' '}
+                <Link href="/auth/signup" className="text-yellow-400 hover:text-yellow-300 font-medium">
+                  Sign up here
+                </Link>
+              </p>
+            </div>
           </div>
         </Card>
 

@@ -8,6 +8,7 @@ import CookieConsent from '@/components/CookieConsent'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://leveragejournal.com'),
   title: 'Leverage Journal™ - 90-Day Transformation System | Goal Setting & Life Planning',
   description: 'Transform your life in 90 days with our scientifically-backed goal setting system. Premium journal + mobile app + proven framework. 94% success rate. 30-day guarantee.',
   keywords: 'goal setting, life planning, transformation, 90-day system, productivity, habit formation, personal development, journal, planner, success',

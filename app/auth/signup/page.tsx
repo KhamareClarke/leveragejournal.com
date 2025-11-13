@@ -11,16 +11,20 @@ import { useRouter } from 'next/navigation';
 export default function SignUp() {
   const { signUp, loading } = useAuth();
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    if (isSubmitting) return; // Prevent double submission
     
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -32,11 +36,47 @@ export default function SignUp() {
       return;
     }
     
+    // Ensure password is not empty (double check)
+    if (!password || password.trim() === '') {
+      setError('Password is required');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
     try {
-      await signUp(email, password);
-      router.push('/dashboard');
-    } catch (err) {
-      setError('Failed to create account. Please try again.');
+      // Send verification code with password (will be used after verification)
+      setError('');
+      setIsSubmitting(true);
+
+      const requestBody: { email: string; password: string; name?: string } = { 
+        email: email.trim(), 
+        password: password.trim(),
+      };
+      
+      // Only include name if it's not empty
+      if (name && name.trim()) {
+        requestBody.name = name.trim();
+      }
+
+      const response = await fetch('/api/auth/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMsg = data.details ? `${data.error}\n\n${data.details}` : data.error;
+        throw new Error(errorMsg);
+      }
+
+      // Redirect to code verification page (password is stored in database with code)
+      router.push('/auth/verify-code?email=' + encodeURIComponent(email));
+    } catch (err: any) {
+      setError(err.message || 'Failed to send verification code. Please try again.');
+      setIsSubmitting(false);
     }
   };
 
@@ -69,6 +109,20 @@ export default function SignUp() {
             )}
 
             <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                  Full Name (Optional)
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-neutral-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                  placeholder="Enter your name"
+                />
+              </div>
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                   Email Address
@@ -154,10 +208,10 @@ export default function SignUp() {
 
             <Button
               type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold py-3 transition-all duration-300"
+              disabled={loading || isSubmitting}
+              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold py-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading || isSubmitting ? 'Sending Code...' : 'Send Code'}
             </Button>
           </form>
 

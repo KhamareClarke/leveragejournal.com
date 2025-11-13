@@ -14,8 +14,19 @@ export default function Home() {
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
+  // Check if popup was already dismissed
+  useEffect(() => {
+    const dismissed = localStorage.getItem('exit-intent-dismissed');
+    if (dismissed) {
+      setShowExitIntent(false);
+    }
+  }, []);
+
   // Exit intent detection
   useEffect(() => {
+    const dismissed = localStorage.getItem('exit-intent-dismissed');
+    if (dismissed) return; // Don't show if already dismissed
+    
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !user) {
         setShowExitIntent(true);
@@ -104,27 +115,23 @@ export default function Home() {
 
             {/* Premium CTA Section */}
             <div className="flex items-center space-x-3">
-              {!loading && (
+              {!loading && user ? (
+                <Button variant="ghost" size="sm" onClick={signOut} className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 rounded-xl">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              ) : (
                 <>
-                  {user ? (
-                    <Button variant="ghost" size="sm" onClick={signOut} className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 rounded-xl">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
+                  <Link href="/auth/signin">
+                    <Button variant="ghost" className="text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 transition-all duration-300 rounded-xl font-medium">
+                      Sign In
                     </Button>
-                  ) : (
-                    <>
-                      <Link href="/auth/signin">
-                        <Button variant="ghost" className="text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 transition-all duration-300 rounded-xl font-medium">
-                          Sign In
-                        </Button>
-                      </Link>
-                      <Link href="/auth/signup">
-                        <Button className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold px-5 py-2.5 transition-all duration-300 hover:scale-105 rounded-xl shadow-lg hover:shadow-yellow-500/30">
-                          Sign Up
-                        </Button>
-                      </Link>
-                    </>
-                  )}
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold px-5 py-2.5 transition-all duration-300 hover:scale-105 rounded-xl shadow-lg hover:shadow-yellow-500/30">
+                      Sign Up
+                    </Button>
+                  </Link>
                 </>
               )}
               <Button className="relative bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold shadow-2xl shadow-yellow-600/40 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/60 group overflow-hidden rounded-xl px-6 py-2.5">
@@ -264,7 +271,10 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-neutral-900 to-black border border-yellow-600/30 rounded-3xl p-8 max-w-md w-full relative">
             <button
-              onClick={() => setShowExitIntent(false)}
+              onClick={() => {
+                setShowExitIntent(false);
+                localStorage.setItem('exit-intent-dismissed', 'true');
+              }}
               className="absolute top-4 right-4 text-gray-400 hover:text-white"
             >
               <X className="w-6 h-6" />
@@ -655,42 +665,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Exit Intent Popup */}
-      {showExitIntent && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-neutral-900 to-black border border-yellow-600/30 rounded-3xl p-8 max-w-md w-full relative">
-            <button
-              onClick={() => setShowExitIntent(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            
-            <div className="text-center space-y-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto">
-                <Trophy className="w-8 h-8 text-black" />
-              </div>
-              
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Wait! Don't Miss Out</h3>
-                <p className="text-gray-300">
-                  Join 10,000+ people transforming their lives. Get your Leverage Journal for just £19.99 (50% off).
-                </p>
-              </div>
-              
-              <div className="space-y-3">
-                <Button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold">
-                  Claim My 50% Discount Now
-                </Button>
-                <p className="text-xs text-gray-400">
-                  ⏰ This offer expires in 24 hours
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Live Chat Widget */}
       <div className="fixed bottom-6 right-6 z-50">
