@@ -30,8 +30,10 @@ jobs:
     - name: Build application
       run: npm run build
       env:
-        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        # WARNING: Hardcoded values - consider using GitHub Secrets for production
+        NEXT_PUBLIC_SUPABASE_URL: https://jmlfvqoholffkegwfsyu.supabase.co
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptbGZ2cW9ob2xmZmtlZ3dmc3l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNjU0NDMsImV4cCI6MjA3Nzg0MTQ0M30.UtJRavqqSNj6k39SI0KBlqF7PcBsSFxHxHuly9ZL5M8
+        # TODO: Add your SUPABASE_SERVICE_ROLE_KEY here or use secrets
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       
     - name: Deploy to Vercel
