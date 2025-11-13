@@ -2033,3 +2033,443 @@ h3 {
 /* Show page numbers on all pages (no special-case hiding) */
 
 /* (removed QR contact row styles) */
+
+/* ============================================================
+   MOBILE RESPONSIVE STYLES
+   ============================================================ */
+
+/* Mobile devices (phones, up to 768px) */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    /* Make pages responsive - full width on mobile */
+    .page {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        border: none !important;
+        box-shadow: none !important;
+        page-break-after: auto !important;
+    }
+
+    /* Remove spread layout on mobile */
+    .spread {
+        width: 100% !important;
+        flex-direction: column !important;
+        height: auto !important;
+    }
+
+    .spread .page {
+        width: 100% !important;
+        border: none !important;
+    }
+
+    /* Typography adjustments for mobile */
+    h1 {
+        font-size: 1.8rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 1rem !important;
+        letter-spacing: 2px !important;
+    }
+
+    h2 {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.75rem !important;
+        letter-spacing: 1.5px !important;
+    }
+
+    h3 {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    p {
+        font-size: 0.9rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Title page adjustments */
+    .title-page h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+    }
+
+    .title-page .subtitle {
+        font-size: 1.1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .crown-icon svg {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .gold-line {
+        width: 200px !important;
+        margin: 1rem auto !important;
+    }
+
+    /* Philosophy section adjustments */
+    .philosophy-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .philosophy-essay {
+        font-size: 0.95rem !important;
+        line-height: 1.7 !important;
+    }
+
+    .philosophy-essay .first-letter {
+        font-size: 2rem !important;
+        line-height: 1.8rem !important;
+        margin: 0.1rem 0.3rem 0 0 !important;
+    }
+
+    /* Cards and containers */
+    .card {
+        padding: 1rem !important;
+        margin: 0.75rem 0 !important;
+    }
+
+    .quote-box {
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
+        font-size: 0.85rem !important;
+    }
+
+    .quote-box::before {
+        font-size: 3rem !important;
+        top: -8px !important;
+        left: 8px !important;
+    }
+
+    /* Page numbers and footer */
+    .page-number {
+        position: relative !important;
+        bottom: auto !important;
+        right: auto !important;
+        text-align: center !important;
+        margin-top: 1rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .footer-wisdom {
+        position: relative !important;
+        bottom: auto !important;
+        margin-top: 1.5rem !important;
+        font-size: 0.75rem !important;
+        padding-top: 0.75rem !important;
+    }
+
+    /* Section icons */
+    .section-icon svg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .crown-icon svg {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    /* Daily spread adjustments */
+    .daily-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+
+    .daily-date {
+        font-size: 1.4rem !important;
+    }
+
+    /* Task lists */
+    .task-item {
+        padding: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Grid trackers */
+    .grid-tracker {
+        grid-template-columns: repeat(7, 1fr) !important;
+        gap: 2px !important;
+    }
+
+    .grid-cell {
+        font-size: 0.7rem !important;
+        padding: 0.25rem !important;
+    }
+
+    /* Habit tracker */
+    .habit-tracker {
+        grid-template-columns: repeat(7, 1fr) !important;
+        gap: 2px !important;
+    }
+
+    .habit-day {
+        font-size: 0.65rem !important;
+    }
+
+    .habit-grid {
+        grid-template-columns: repeat(7, 1fr) !important;
+        gap: 2px !important;
+    }
+
+    .habit-cell {
+        font-size: 0.6rem !important;
+    }
+
+    /* QR codes */
+    .qr-enhanced {
+        max-width: 180px !important;
+        padding: 1rem !important;
+        margin: 1.5rem auto !important;
+    }
+
+    .qr-placeholder {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    /* Score grid */
+    .score-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    .score-item {
+        padding: 0.75rem !important;
+    }
+
+    .score-number {
+        font-size: 1.5rem !important;
+    }
+
+    /* Law containers */
+    .law-container {
+        padding: 1.5rem !important;
+        margin: 1.5rem 0 !important;
+    }
+
+    .law-title {
+        font-size: 1.2rem !important;
+    }
+
+    .law-content {
+        font-size: 0.9rem !important;
+    }
+
+    /* Journey map */
+    .journey-map {
+        padding: 1.5rem !important;
+        margin: 1.5rem 0 !important;
+    }
+
+    .journey-icon {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    /* Reward checkpoint */
+    .reward-checkpoint {
+        padding: 1.5rem !important;
+        margin: 1rem 0 !important;
+    }
+
+    .reward-title {
+        font-size: 1.5rem !important;
+    }
+
+    .reward-content {
+        font-size: 1rem !important;
+    }
+
+    /* Certificate */
+    .certificate {
+        padding: 2rem 1rem !important;
+        margin: 1.5rem 0 !important;
+    }
+
+    .certificate-title {
+        font-size: 1.5rem !important;
+    }
+
+    .certificate-text {
+        font-size: 1rem !important;
+    }
+
+    /* Table of contents */
+    .toc-page .toc-content {
+        font-size: 0.85rem !important;
+    }
+
+    .toc-item {
+        padding: 0.5rem 0 !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Back to TOC button */
+    .back-to-toc-btn {
+        bottom: 1rem !important;
+        right: 1rem !important;
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Writing lines */
+    .writing-line {
+        min-height: 24px !important;
+        margin: 6px 0 !important;
+    }
+
+    /* Answer spaces */
+    .answer-space {
+        min-height: 50px !important;
+        padding: 0.75rem !important;
+    }
+
+    /* Form elements */
+    .form-input {
+        font-size: 0.9rem !important;
+    }
+
+    .form-textarea {
+        font-size: 0.85rem !important;
+        min-height: 80px !important;
+    }
+
+    /* Copyright page */
+    .copyright-page {
+        padding: 1.5rem 1rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    .copyright-content {
+        font-size: 0.85rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Dedication page */
+    .dedication-page .dedication-text {
+        font-size: 1.2rem !important;
+        padding: 0 1rem !important;
+    }
+
+    /* Chapter divider */
+    .chapter-divider h1 {
+        font-size: 2.5rem !important;
+    }
+
+    .chapter-divider h2 {
+        font-size: 1.8rem !important;
+    }
+
+    /* Utility adjustments */
+    .text-4xl { font-size: 1.8rem !important; }
+    .text-3xl { font-size: 1.5rem !important; }
+    .text-2xl { font-size: 1.3rem !important; }
+    .text-xl { font-size: 1.1rem !important; }
+    .text-lg { font-size: 1rem !important; }
+
+    /* Spacing adjustments */
+    .mb-8 { margin-bottom: 1.5rem !important; }
+    .mb-6 { margin-bottom: 1rem !important; }
+    .mt-8 { margin-top: 1.5rem !important; }
+    .mt-6 { margin-top: 1rem !important; }
+}
+
+/* Small mobile devices (phones, up to 480px) */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 11px;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    h2 {
+        font-size: 1.2rem !important;
+    }
+
+    .title-page h1 {
+        font-size: 2rem !important;
+    }
+
+    .philosophy-title {
+        font-size: 1.3rem !important;
+    }
+
+    .philosophy-essay {
+        font-size: 0.9rem !important;
+    }
+
+    .philosophy-essay .first-letter {
+        font-size: 1.8rem !important;
+        line-height: 1.6rem !important;
+    }
+
+    .crown-icon svg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .gold-line {
+        width: 150px !important;
+    }
+
+    .card {
+        padding: 0.75rem !important;
+    }
+
+    .quote-box {
+        padding: 0.75rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .qr-enhanced {
+        max-width: 150px !important;
+        padding: 0.75rem !important;
+    }
+
+    .score-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .habit-tracker,
+    .habit-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+}
+
+/* Tablet devices (768px to 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .page {
+        width: 90% !important;
+        max-width: 600px !important;
+        padding: 1.5rem !important;
+    }
+
+    body {
+        font-size: 13px;
+    }
+
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    h2 {
+        font-size: 1.6rem !important;
+    }
+}
