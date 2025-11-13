@@ -9,10 +9,55 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #000000;
   color: #ffffff;
   font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
+
+/* Touch-friendly interactions */
+button,
+a,
+[role="button"],
+input[type="submit"],
+input[type="button"] {
+  -webkit-tap-highlight-color: rgba(234, 179, 8, 0.2);
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on buttons */
+button,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Smooth scrolling for anchor links */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Custom scrollbar */
@@ -31,4 +76,27 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #606060;
+}
+
+/* Mobile scrollbar */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid #EAB308;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
 }

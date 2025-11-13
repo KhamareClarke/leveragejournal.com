@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, Star, ArrowRight, User, LogOut, Clock, Shield, Truck, Globe, Package, MapPin } from 'lucide-react';
+import { BookOpen, Star, ArrowRight, User, LogOut, Clock, Shield, Truck, Globe, Package, MapPin, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
@@ -98,6 +98,15 @@ export default function Shipping() {
                 FAQ
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
+              {!loading && user && (
+                <Link href="/dashboard" className="relative text-gray-300 hover:text-yellow-400 transition-all duration-300 font-medium group">
+                  <span className="flex items-center space-x-2">
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Dashboard</span>
+                  </span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 group-hover:w-full transition-all duration-300"></span>
+                </Link>
+              )}
               <div className="bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/30 rounded-full px-4 py-2 backdrop-blur-sm hover:border-yellow-400/50 transition-all duration-300">
                 <span className="text-yellow-400 font-bold text-sm">£19.99</span>
                 <span className="text-gray-400 text-sm ml-2 line-through">£39.99</span>

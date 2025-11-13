@@ -78,7 +78,7 @@ function generateFrontMatter() {
             <h1 class="philosophy-title">Why Leverage Changes Everything</h1>
             
             <div class="philosophy-essay">
-                <p><span class="first-letter">I</span>n 1665, Isaac Newton discovered that a small force applied at the right point could move the world. This principle of leverage extends far beyond physics—it is the fundamental law of all achievement.</p>
+                <p><span class="first-letter">I</span>n 1665, Isaac Newton discovered that a small force applied at the right point could move the world. This principle of leverage extends far beyond physics. It is the fundamental law of all achievement.</p>
                 
                 <p>Consider the greatest empires in history. They were not built by those who worked the hardest, but by those who worked the smartest. Alexander the Great leveraged military strategy. The Medici family leveraged financial systems. Steve Jobs leveraged design principles. Each understood that extraordinary results come from finding the right leverage points.</p>
                 
