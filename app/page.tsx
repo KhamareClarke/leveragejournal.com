@@ -15,20 +15,31 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Check if popup was already dismissed
+  // Check if popup was already dismissed - initialize state from localStorage
   useEffect(() => {
     const dismissed = localStorage.getItem('exit-intent-dismissed');
-    if (dismissed) {
+    if (dismissed === 'true') {
       setShowExitIntent(false);
     }
   }, []);
 
   // Exit intent detection
   useEffect(() => {
+    // Check if already dismissed before setting up listener
     const dismissed = localStorage.getItem('exit-intent-dismissed');
-    if (dismissed) return; // Don't show if already dismissed
+    if (dismissed === 'true') {
+      setShowExitIntent(false);
+      return; // Don't set up listener if already dismissed
+    }
     
     const handleMouseLeave = (e: MouseEvent) => {
+      // Double-check dismissal status before showing
+      const isDismissed = localStorage.getItem('exit-intent-dismissed');
+      if (isDismissed === 'true') {
+        setShowExitIntent(false);
+        return;
+      }
+      
       if (e.clientY <= 0 && !user) {
         setShowExitIntent(true);
       }
@@ -369,9 +380,12 @@ export default function Home() {
             <button
               onClick={() => {
                 setShowExitIntent(false);
+                // Set with timestamp to ensure it persists
                 localStorage.setItem('exit-intent-dismissed', 'true');
+                localStorage.setItem('exit-intent-dismissed-time', Date.now().toString());
               }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white z-10"
+              aria-label="Close popup"
             >
               <X className="w-6 h-6" />
             </button>

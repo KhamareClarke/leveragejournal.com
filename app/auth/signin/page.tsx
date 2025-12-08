@@ -60,14 +60,14 @@ export default function SignIn() {
           : null;
         
         if (safeRedirect) {
-          // Try to navigate to the requested page
-          router.push(safeRedirect);
+          // Use window.location for immediate redirect to ensure it works
+          window.location.href = safeRedirect;
         } else {
           // Invalid redirect, go to dashboard
-          router.push('/dashboard');
+          window.location.href = '/dashboard';
         }
       } else {
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
       }
       
       // Don't reset loading here - let redirect happen

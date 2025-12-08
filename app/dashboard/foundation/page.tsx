@@ -163,8 +163,10 @@ function FoundationPageContent() {
   useEffect(() => {
     if (!authLoading && !user) {
       // Use window.location for immediate redirect to prevent blank page
+      // Preserve the full URL including query parameters
       if (typeof window !== 'undefined') {
-        window.location.href = '/auth/signin';
+        const currentPath = window.location.pathname + window.location.search;
+        window.location.href = `/auth/signin?redirect=${encodeURIComponent(currentPath)}`;
       }
     }
   }, [user, authLoading]);
