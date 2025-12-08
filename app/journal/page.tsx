@@ -18,7 +18,11 @@ export default function JournalPage() {
 
   useEffect(() => {
     if (!user) {
-      router.push('/auth/signin?redirect=/journal');
+      // Preserve the full URL including query parameters
+      const currentPath = typeof window !== 'undefined' 
+        ? window.location.pathname + window.location.search 
+        : '/journal';
+      router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
       return;
     }
 

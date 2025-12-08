@@ -51,11 +51,10 @@ export default function SignIn() {
       // Immediately redirect - don't wait for profile loading
       // The dashboard will handle loading states
       const redirect = searchParams.get('redirect') || searchParams.get('next');
-      const referrer = typeof window !== 'undefined' ? document.referrer : '';
       
-      // If coming from journal page, redirect back there
-      if (redirect === '/journal' || referrer.includes('/journal')) {
-        router.push('/journal');
+      // Redirect to the originally requested page, or dashboard as fallback
+      if (redirect) {
+        router.push(redirect);
       } else {
         router.push('/dashboard');
       }

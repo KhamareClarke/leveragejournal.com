@@ -53,31 +53,8 @@ function GoalsPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [updatingProgress, setUpdatingProgress] = useState<string | null>(null);
-
-  // Redirect to sign-in if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/auth/signin?redirect=/dashboard/goals');
-    }
-  }, [user, authLoading, router]);
-
-  // Early return - don't render anything if not authenticated or still loading
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null; // Will redirect via useEffect
-  }
   
-  // Get today's date (client-side only)
+  // Get today's date (client-side only) - MUST be before any early returns
   const [today, setToday] = useState(() => {
     if (typeof window !== 'undefined') {
       const now = new Date();
@@ -317,6 +294,23 @@ function GoalsPageContent() {
     });
     setShowForm(true);
   };
+
+  // Early return - don't render anything if not authenticated or still loading
+  // MUST be after all hooks are declared
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect via useEffect
+  }
 
   const handleUpdateProgress = async (goalId: string, newProgress: number) => {
     if (!user || !goalId) return;

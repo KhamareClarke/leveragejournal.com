@@ -113,29 +113,6 @@ function FoundationPageContent() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Redirect to sign-in if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/auth/signin?redirect=/dashboard/foundation');
-    }
-  }, [user, authLoading, router]);
-
-  // Early return - don't render anything if not authenticated or still loading
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null; // Will redirect via useEffect
-  }
-
   // Reset submitting state if it gets stuck (increased to 35 seconds to match API timeout)
   useEffect(() => {
     if (submitting) {
@@ -181,6 +158,17 @@ function FoundationPageContent() {
     lessons_learned: '',
     accountability_partner: '',
   });
+
+  // Redirect to sign-in if not authenticated - MUST be after all hooks
+  useEffect(() => {
+    if (!authLoading && !user) {
+      // Preserve the full URL including query parameters
+      const currentPath = typeof window !== 'undefined' 
+        ? window.location.pathname + window.location.search 
+        : '/dashboard/foundation';
+      router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
+    }
+  }, [user, authLoading, router]);
 
   // Ensure entry_date is set when today changes
   useEffect(() => {

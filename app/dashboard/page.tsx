@@ -1351,7 +1351,11 @@ export default function Dashboard() {
   // Redirect to sign-in if not authenticated - MUST happen before any content renders
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/auth/signin?redirect=/dashboard');
+      // Preserve the full URL including query parameters
+      const currentPath = typeof window !== 'undefined' 
+        ? window.location.pathname + window.location.search 
+        : '/dashboard';
+      router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
     }
   }, [user, authLoading, router]);
 
@@ -1361,7 +1365,10 @@ export default function Dashboard() {
     if (authLoading) {
       const timeout = setTimeout(() => {
         console.error('Auth loading timeout - forcing redirect');
-        router.push('/auth/signin?redirect=/dashboard');
+        const currentPath = typeof window !== 'undefined' 
+          ? window.location.pathname + window.location.search 
+          : '/dashboard';
+        router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
       }, 10000);
       
       return () => clearTimeout(timeout);

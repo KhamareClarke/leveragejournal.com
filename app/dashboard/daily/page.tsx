@@ -11,7 +11,11 @@ export default function DailyPage() {
   // Redirect to sign-in if not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/auth/signin?redirect=/dashboard/daily');
+      // Preserve the full URL including query parameters
+      const currentPath = typeof window !== 'undefined' 
+        ? window.location.pathname + window.location.search 
+        : '/dashboard/daily';
+      router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
     }
   }, [user, authLoading, router]);
 
