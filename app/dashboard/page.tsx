@@ -1351,13 +1351,12 @@ export default function Dashboard() {
   // Redirect to sign-in if not authenticated - MUST happen before any content renders
   useEffect(() => {
     if (!authLoading && !user) {
-      // Preserve the full URL including query parameters
-      const currentPath = typeof window !== 'undefined' 
-        ? window.location.pathname + window.location.search 
-        : '/dashboard';
-      router.push(`/auth/signin?redirect=${encodeURIComponent(currentPath)}`);
+      // Use window.location for immediate redirect to prevent blank page
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth/signin';
+      }
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading]);
 
   // Show loading screen while auth is being checked (with timeout fallback)
   useEffect(() => {
