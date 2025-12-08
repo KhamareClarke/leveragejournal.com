@@ -279,13 +279,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      // Try to sign out, but don't fail if there's no session
       const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw new Error(error.message);
+      if (error && !error.message.includes('session')) {
+        // Only throw if it's not a session-related error
+        console.warn('Sign out error:', error.message);
       }
+      // Always clear user state, even if signOut had an error
       setUser(null);
     } catch (error: any) {
-      throw new Error(error.message || 'Sign out failed');
+      // If sign out fails, still clear the user state
+      console.warn('Sign out error:', error.message || 'Sign out failed');
+      setUser(null);
     }
   };
 
