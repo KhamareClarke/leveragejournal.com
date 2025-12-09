@@ -9,10 +9,13 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.
 export async function POST(request: NextRequest) {
   try {
     // Verify cron secret (optional but recommended)
+    // Vercel cron jobs are automatically authenticated, but we can add extra security
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
+    const isVercelCron = request.headers.get('x-vercel-signature') || request.headers.get('user-agent')?.includes('vercel-cron');
     
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    // If CRON_SECRET is set, require it (unless it's a Vercel cron job)
+    if (cronSecret && !isVercelCron && authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
