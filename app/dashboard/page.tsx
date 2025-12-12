@@ -143,7 +143,6 @@ const DailyFlowTab = memo(function DailyFlowTab({ preloadedData }: { preloadedDa
               }
             }
           } catch (insightsError) {
-            console.error('Failed to load insights:', insightsError);
             // Fallback suggestions
             if (allEntries.length === 0) {
               setAiSuggestions(["🌟 Welcome! Start your journaling journey today."]);
@@ -170,9 +169,9 @@ const DailyFlowTab = memo(function DailyFlowTab({ preloadedData }: { preloadedDa
             setAccountCreatedDate(today);
           }
         }
-      } catch (error) {
-        console.error('Failed to load entries:', error);
-      } finally {
+        } catch (error) {
+          // Silent fail
+        } finally {
         setLoadingEntries(false);
       }
     };
@@ -1984,10 +1983,8 @@ export default function Dashboard() {
           if (statsRes.ok && statsRes instanceof Response) {
             const statsData = await statsRes.json();
             newData.stats = statsData;
-            console.log('✅ Stats loaded:', statsData);
           } else if (statsRes instanceof Response) {
             const errorText = await statsRes.text().catch(() => 'Unknown error');
-            console.error('❌ Stats response not OK:', statsRes.status, errorText);
             // Set default stats so UI can render
             newData.stats = {
               weeklyProgress: 0,
@@ -2002,7 +1999,7 @@ export default function Dashboard() {
             };
           }
         } catch (err) {
-          console.error('❌ Error parsing stats:', err);
+          // Silent fail
           // Set default stats on error
           newData.stats = {
             weeklyProgress: 0,
@@ -2021,10 +2018,8 @@ export default function Dashboard() {
           if (insightsRes.ok && insightsRes instanceof Response) {
             const insightsData = await insightsRes.json();
             newData.insights = insightsData;
-            console.log('✅ Insights loaded:', insightsData);
           } else if (insightsRes instanceof Response) {
             const errorText = await insightsRes.text().catch(() => 'Unknown error');
-            console.error('❌ Insights response not OK:', insightsRes.status, errorText);
             // Set default insights so UI can render
             newData.insights = {
               daysCompleted: 0,
@@ -2038,7 +2033,7 @@ export default function Dashboard() {
             };
           }
         } catch (err) {
-          console.error('❌ Error parsing insights:', err);
+          // Silent fail
           // Set default insights on error
           newData.insights = {
             daysCompleted: 0,
@@ -2056,24 +2051,22 @@ export default function Dashboard() {
           if (foundationRes.ok && foundationRes instanceof Response) {
             const foundationData = await foundationRes.json();
             newData.foundationEntries = foundationData.entries || [];
-            console.log('Foundation entries loaded:', newData.foundationEntries.length);
           } else if (foundationRes instanceof Response) {
-            console.warn('Foundation response not OK:', foundationRes.status);
+            // Silent fail
           }
         } catch (err) {
-          console.error('Error parsing foundation:', err);
+          // Silent fail
         }
 
         try {
           if (goalsRes.ok && goalsRes instanceof Response) {
             const goalsData = await goalsRes.json();
             newData.goals = goalsData.goals || [];
-            console.log('Goals loaded:', newData.goals.length);
           } else if (goalsRes instanceof Response) {
-            console.warn('Goals response not OK:', goalsRes.status);
+            // Silent fail
           }
         } catch (err) {
-          console.error('Error parsing goals:', err);
+          // Silent fail
         }
 
         try {

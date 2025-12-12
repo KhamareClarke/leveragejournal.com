@@ -85,7 +85,6 @@ export async function GET(request: NextRequest) {
     const user = await getUserFromRequest(request);
     
     if (!user) {
-      console.error('❌ Insights API: No user found in request');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
