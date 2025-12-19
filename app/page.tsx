@@ -332,7 +332,7 @@ export default function Home() {
       </nav>
 
       {/* 🟡 Hero Section - Fully Mobile Responsive */}
-      <section className="relative min-h-screen flex items-center justify-center pt-8 sm:pt-12 md:pt-32 pb-20 md:pb-24 overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center pt-32 sm:pt-36 md:pt-32 pb-20 md:pb-24 overflow-hidden">
         {/* Ultra-Luxury Background with Gold Spotlight */}
         <div className="absolute inset-0 bg-black"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black"></div>
@@ -379,7 +379,7 @@ export default function Home() {
             {/* Subhead */}
             <div className="max-w-2xl mx-auto pt-3">
               <p className="text-xl md:text-2xl text-white font-semibold leading-relaxed">
-                A 90-Day Blueprint for Success
+                Plan • Do • Achieve
               </p>
             </div>
 
@@ -395,6 +395,9 @@ export default function Home() {
                   <span className="text-xl font-black animate-gradient">£19.99</span>
                 </span>
               </Button>
+              <p className="text-center text-gray-400 text-xs mt-4">
+                ✅ Free Shipping • 30-Day Money Back Guarantee
+              </p>
             </div>
 
             {/* Offer Badges */}
@@ -409,12 +412,12 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-2 text-sm bg-blue-500/10 border border-blue-500/30 rounded-full px-4 py-2">
                 <BookOpen className="w-4 h-4 text-blue-400" />
-                <span className="text-white font-semibold">First Edition Paperback</span>
+                <span className="text-white font-semibold">First Edition A5</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm bg-red-500/10 border border-red-500/30 rounded-full px-4 py-2">
+                <span className="text-white font-semibold">⚡ Only 247 Copies Left</span>
               </div>
             </div>
-            <p className="text-center text-[#f1cb32] text-sm font-bold mt-3">
-              Only 247 Copies Left
-            </p>
 
           </div>
         </div>
@@ -428,25 +431,25 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-          <div className="bg-black/60 backdrop-blur-xl border border-[#f1cb32]/20 rounded-3xl p-12 md:p-16 shadow-[0_20px_80px_rgba(241,203,50,0.15),inset_0_1px_0_0_rgba(241,203,50,0.05)]">
-            <div className="grid grid-cols-3 gap-12 md:gap-20 divide-x divide-[#f1cb32]/20">
-              <div className="text-center px-6">
-                <div className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
+          <div className="bg-black/60 backdrop-blur-xl border border-[#f1cb32]/20 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 shadow-[0_20px_80px_rgba(241,203,50,0.15),inset_0_1px_0_0_rgba(241,203,50,0.05)]">
+            <div className="grid grid-cols-3 gap-4 sm:gap-8 md:gap-12 lg:gap-20 divide-x divide-[#f1cb32]/20">
+              <div className="text-center px-2 sm:px-4 md:px-6">
+                <div className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight mb-2 sm:mb-4 md:mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
                   <span className="animate-gradient">94%</span>
                 </div>
-                <div className="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-[0.2em]">Success Rate</div>
+                <div className="text-[10px] sm:text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider">Success Rate</div>
               </div>
-              <div className="text-center px-6">
-                <div className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
+              <div className="text-center px-2 sm:px-4 md:px-6">
+                <div className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight mb-2 sm:mb-4 md:mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
                   <span className="animate-gradient">10K+</span>
                 </div>
-                <div className="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-[0.2em]">Active Users</div>
+                <div className="text-[10px] sm:text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider">Active Users</div>
               </div>
-              <div className="text-center px-6">
-                <div className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
+              <div className="text-center px-2 sm:px-4 md:px-6">
+                <div className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight mb-2 sm:mb-4 md:mb-6 drop-shadow-[0_8px_32px_rgba(241,203,50,0.4)]">
                   <span className="animate-gradient">4.9</span>
                 </div>
-                <div className="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-[0.2em]">Rating</div>
+                <div className="text-[10px] sm:text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider">Rating</div>
               </div>
             </div>
           </div>
@@ -527,6 +530,68 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Content Details - Mobile First */}
+            <div className="space-y-8 order-1 lg:order-2">
+              <div className="space-y-4">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
+                  <span className="block text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)]">WHY THIS</span>
+                  <span className="block animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.5)]">JOURNAL WORKS</span>
+                </h2>
+                <p className="text-white text-xl leading-relaxed font-medium">
+                  Most people fail not from lack of ambition, but from lack of method.
+                </p>
+              </div>
+
+              {/* Features List */}
+              <div className="space-y-3">
+                {[
+                  { icon: Target, title: 'Strategic Architecture' },
+                  { icon: Zap, title: 'Daily Discipline' },
+                  { icon: TrendingUp, title: 'Weekly Mastery' }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 p-4 bg-gradient-to-br from-black/80 to-black/60 backdrop-blur-xl rounded-xl border border-[#f1cb32]/30 hover:border-[#f1cb32]/50 transition-all duration-300 shadow-[0_8px_32px_rgba(241,203,50,0.12)] hover:shadow-[0_16px_48px_rgba(241,203,50,0.25)] group/item">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#f1cb32]/30 to-[#f1cb32]/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_16px_rgba(241,203,50,0.3)] border border-[#f1cb32]/30 group-hover/item:scale-110 transition-all duration-300">
+                      <item.icon className="w-5 h-5 text-[#f1cb32]" />
+                    </div>
+                    <h3 className="text-white font-bold text-lg">{item.title}</h3>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social Proof */}
+              <div className="flex items-center gap-6 pt-4">
+                <div className="text-center">
+                  <div className="text-3xl font-black animate-gradient">10,000+</div>
+                  <div className="text-xs text-gray-400">Happy Customers</div>
+                </div>
+                <div className="w-px h-12 bg-gray-700"></div>
+                <div className="text-center">
+                  <div className="text-3xl font-black animate-gradient">4.9/5</div>
+                  <div className="text-xs text-gray-400">Rating</div>
+                </div>
+                <div className="w-px h-12 bg-gray-700"></div>
+                <div className="text-center">
+                  <div className="text-xs text-gray-400">Verified Reviews</div>
+                </div>
+              </div>
+
+              {/* CTA Button - Desktop Only */}
+              <div className="hidden lg:block">
+                <Button className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <span className="flex items-center justify-center gap-4 relative z-10">
+                    <span className="text-white font-black text-xl">Get Started</span>
+                    <span className="text-2xl font-black animate-gradient">£19.99</span>
+                    <span className="line-through text-gray-500 text-base font-semibold">£39.99</span>
+                  </span>
+                </Button>
+                <p className="text-center text-gray-400 text-xs mt-4">
+                  ⚡ Only 247 Copies Left • Ships Today
+                </p>
+              </div>
+            </div>
+
             {/* Video Player */}
             <div className="relative group order-2 lg:order-1 max-w-xs mx-auto lg:mx-0">
               <div className="absolute -inset-8 bg-gradient-to-r from-[#f1cb32]/20 via-[#f1cb32]/10 to-transparent opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700"></div>
@@ -547,46 +612,22 @@ export default function Home() {
                 </div>
               </div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#f1cb32] opacity-20 blur-[60px] rounded-full group-hover:opacity-30 transition-opacity duration-500"></div>
-            </div>
-
-            {/* Content Details */}
-            <div className="space-y-8 order-1 lg:order-2">
-              <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
-                  <span className="block text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)]">WHY THIS</span>
-                  <span className="block animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.5)]">JOURNAL WORKS</span>
-                </h2>
-                <p className="text-white text-xl leading-relaxed font-medium">
-                  You don't need hype. You need structure.
+              
+              {/* CTA Button - Mobile Only (appears right after video) */}
+              <div className="lg:hidden mt-8">
+                <Button className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <span className="flex items-center justify-center gap-4 relative z-10">
+                    <span className="text-white font-black text-xl">Get Started</span>
+                    <span className="text-2xl font-black animate-gradient">£19.99</span>
+                    <span className="line-through text-gray-500 text-base font-semibold">£39.99</span>
+                  </span>
+                </Button>
+                <p className="text-center text-gray-400 text-xs mt-4">
+                  🚀 Join 10,000+ People Who Started Today
                 </p>
               </div>
-
-              {/* Features List */}
-              <div className="space-y-3">
-                {[
-                  { icon: Target, title: 'Strategic Clarity' },
-                  { icon: Shield, title: 'Anti-Sabotage Design' },
-                  { icon: Calendar, title: 'Built-In Reviews' }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 p-4 bg-gradient-to-br from-black/80 to-black/60 backdrop-blur-xl rounded-xl border border-[#f1cb32]/30 hover:border-[#f1cb32]/50 transition-all duration-300 shadow-[0_8px_32px_rgba(241,203,50,0.12)] hover:shadow-[0_16px_48px_rgba(241,203,50,0.25)] group/item">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#f1cb32]/30 to-[#f1cb32]/10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_16px_rgba(241,203,50,0.3)] border border-[#f1cb32]/30 group-hover/item:scale-110 transition-all duration-300">
-                      <item.icon className="w-5 h-5 text-[#f1cb32]" />
-                    </div>
-                    <h3 className="text-white font-bold text-lg">{item.title}</h3>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <Button className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <span className="flex items-center justify-center gap-4 relative z-10">
-                  <span className="text-white font-black text-xl">Get Started</span>
-                  <span className="text-2xl font-black animate-gradient">£19.99</span>
-                  <span className="line-through text-gray-500 text-base font-semibold">£39.99</span>
-                </span>
-              </Button>
             </div>
           </div>
         </div>
@@ -636,14 +677,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <div className="text-center mb-20">
             <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-4 py-1 mb-6 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
-              <span className="text-[#f1cb32] text-sm font-semibold">HOW IT WORKS</span>
+              <span className="text-[#f1cb32] text-sm font-semibold">THE SYSTEM</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight leading-tight">
-              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">Your</span>{' '}
-              <span className="animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.6)]">Transformation</span>
+              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">HOW IT</span>{' '}
+              <span className="animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.6)]">WORKS</span>
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light">
-              The exact system that changed everything for 10,000+ people
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-light">
+              What 10,000+ people discovered about turning intention into reality
             </p>
           </div>
 
@@ -654,24 +695,24 @@ export default function Home() {
                 number: '01',
                 title: 'Plan',
                 subtitle: 'Vision to Strategy',
-                description: 'Finally turn the life you imagine into a concrete plan you can actually execute.',
-                features: ['90-Day Vision Mapping', 'Identity-Based Goals', 'Psychology Frameworks']
+                description: 'The powerful translate dreams into frameworks. The weak remain in fantasy.',
+                features: ['7 Laws of Leverage', 'Strategic Categories', 'Obstacle Mapping']
               },
               {
                 icon: Zap,
                 number: '02',
                 title: 'Do',
-                subtitle: 'Action to Habit',
-                description: 'Stop procrastinating. Build the discipline that separates dreamers from achievers.',
-                features: ['Daily Action Tracking', 'App Sync & Reminders', 'Habit Formation']
+                subtitle: 'Action to Ritual',
+                description: 'Discipline is the bridge between goals and accomplishment. Cross it daily.',
+                features: ['90 Daily Rituals', 'Morning + Evening', 'Pattern Building']
               },
               {
                 icon: TrendingUp,
                 number: '03',
                 title: 'Achieve',
-                subtitle: 'Progress to Results',
-                description: 'Watch yourself become someone you are proud of. Track every win, celebrate every breakthrough.',
-                features: ['Progress Analytics', 'System Optimization', 'Milestone Celebrations']
+                subtitle: 'Reflection to Power',
+                description: 'Those who study their victories repeat them. Those who ignore their losses drown in them.',
+                features: ['13 Weekly Analyses', 'Pattern Recognition', 'Strategic Refinement']
               }
             ].map((step, index) => (
               <Card key={index} className="bg-black/60 backdrop-blur-xl border-2 border-[#f1cb32]/20 p-12 md:p-14 hover:border-[#f1cb32]/40 shadow-[0_16px_64px_rgba(241,203,50,0.2),0_0_40px_rgba(241,203,50,0.1),inset_0_2px_0_0_rgba(241,203,50,0.05)] hover:shadow-[0_24px_80px_rgba(241,203,50,0.35),0_0_60px_rgba(241,203,50,0.2),inset_0_2px_0_0_rgba(241,203,50,0.1)] transition-all duration-500 group rounded-3xl hover:scale-[1.01] relative overflow-hidden">
@@ -722,6 +763,9 @@ export default function Home() {
                 <span className="line-through opacity-60 text-gray-400 text-sm">£39.99</span>
               </span>
             </Button>
+            <p className="text-center text-gray-400 text-xs mt-4">
+              🔥 Limited First Edition • Secure Your Copy Now
+            </p>
           </div>
         </div>
         
@@ -736,16 +780,15 @@ export default function Home() {
       <section id="testimonials" className="py-24 md:py-32 lg:py-40 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="text-center mb-20 relative z-10">
+          <div className="text-center mb-16 md:mb-20">
             <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-4 py-1 mb-6 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
               <span className="text-[#f1cb32] text-sm font-semibold">⭐ CUSTOMER REVIEWS</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight leading-tight">
-              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">Loved by</span>{' '}
               <span className="animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.6)]">10,000+</span>{' '}
-              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">People</span>
+              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">Transformations</span>
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light">Real transformations. Real people. Real proof it works.</p>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light">Power recognizes power. Results speak louder than promises.</p>
           </div>
 
           {/* Infinite Carousel Container */}
@@ -774,12 +817,12 @@ export default function Home() {
                       result: "94% goal completion rate"
                     }
                   ].map((testimonial, index) => (
-                    <div key={`${setIndex}-${index}`} className="relative group w-[420px] flex-shrink-0">
+                    <div key={`${setIndex}-${index}`} className="relative group w-[320px] sm:w-[380px] md:w-[420px] flex-shrink-0">
                       {/* Outer glow frame */}
                       <div className="absolute -inset-1 bg-gradient-to-br from-[#f1cb32]/40 via-[#f1cb32]/20 to-transparent rounded-[2rem] opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
                       
                       {/* Card container with frame */}
-                      <Card className="relative bg-gradient-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-2xl border-2 border-[#f1cb32]/30 p-10 hover:border-[#f1cb32]/50 shadow-[0_20px_80px_rgba(241,203,50,0.3),inset_0_1px_2px_rgba(241,203,50,0.15)] hover:shadow-[0_32px_120px_rgba(241,203,50,0.5),inset_0_2px_4px_rgba(241,203,50,0.25)] transition-all duration-500 rounded-[1.75rem] overflow-hidden hover:scale-[1.02]">
+                      <Card className="relative bg-gradient-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-2xl border-2 border-[#f1cb32]/30 p-6 sm:p-8 md:p-10 hover:border-[#f1cb32]/50 shadow-[0_20px_80px_rgba(241,203,50,0.3),inset_0_1px_2px_rgba(241,203,50,0.15)] hover:shadow-[0_32px_120px_rgba(241,203,50,0.5),inset_0_2px_4px_rgba(241,203,50,0.25)] transition-all duration-500 rounded-[1.75rem] overflow-hidden hover:scale-[1.02]">
                         {/* Inner decorative frame */}
                         <div className="absolute inset-3 border border-[#f1cb32]/10 rounded-3xl pointer-events-none"></div>
                         
@@ -836,6 +879,9 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <span className="relative z-10 text-white">Join <span className="animate-gradient font-black">10,000+</span> Happy Customers</span>
             </Button>
+            <p className="text-center text-gray-400 text-xs mt-4">
+              ⭐ Rated 4.9/5 by 10,000+ Customers
+            </p>
           </div>
         </div>
       </section>
@@ -861,14 +907,13 @@ export default function Home() {
             {/* Left Column - Content */}
             <div className="space-y-10">
               <div className="space-y-8">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                  <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">Your Future Self</span>
-                  <br />
-                  <span className="animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.6)]">Won't Wait. Why Should You?</span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-center">
+                  <span className="block bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(255,255,255,0.1)]">Leverage Waits</span>
+                  <span className="block animate-gradient drop-shadow-[0_8px_32px_rgba(241,203,50,0.6)]">for No One</span>
                 </h2>
                 
                 <p className="text-base md:text-lg text-gray-300 font-light">
-                  Join <span className="animate-gradient font-semibold">10,000+</span> readers using The Leverage Journal™ to stay focused, consistent, and clear for 90 days.
+                  <span className="animate-gradient font-semibold">10,000+</span> readers understand: clarity compounds. Consistency conquers. Structure liberates.
                 </p>
               </div>
               
@@ -881,11 +926,11 @@ export default function Home() {
                   </div>
                   <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-xl border border-[#f1cb32]/20 rounded-2xl px-6 py-4 hover:border-[#f1cb32]/40 transition-all duration-300 shadow-[0_8px_32px_rgba(241,203,50,0.15),inset_0_1px_0_0_rgba(241,203,50,0.05)] hover:shadow-[0_12px_48px_rgba(241,203,50,0.25)] group">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-xs text-gray-300">📘 First Edition Paperback</span>
+                    <span className="text-xs text-gray-300">✓ First Edition A5</span>
                   </div>
                   <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-xl border border-[#f1cb32]/20 rounded-2xl px-6 py-4 hover:border-[#f1cb32]/40 transition-all duration-300 shadow-[0_8px_32px_rgba(241,203,50,0.15),inset_0_1px_0_0_rgba(241,203,50,0.05)] hover:shadow-[0_12px_48px_rgba(241,203,50,0.25)] group">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-xs text-gray-300">🧠 Daily Pages & Reviews</span>
+                    <span className="text-xs text-gray-300">✓ Daily & Weekly Structure</span>
                   </div>
                 </div>
 
@@ -934,8 +979,8 @@ export default function Home() {
                       className="object-contain"
                     />
                   </div>
-                  <p className="text-gray-400 text-xl font-bold">First Edition Paperback</p>
-                  <p className="text-gray-500 text-sm">Matte Black • Gold Print • 180 Pages</p>
+                  <p className="text-gray-400 text-xl font-bold">First Edition A5</p>
+                  <p className="text-gray-500 text-sm">Matte Black • Gold Foil • 222 Pages</p>
                   <div className="pt-4">
                     <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-4 py-2 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
                       <span className="animate-gradient text-sm font-semibold">⚡ Limited First Edition — Only 247 Copies Left</span>
@@ -1000,8 +1045,13 @@ export default function Home() {
               {/* Brand */}
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-[#f1cb32] to-[#d4a017] rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(241,203,50,0.4)] border border-[#f1cb32]/30">
-                    <BookOpen className="w-4 h-4 text-black" />
+                  <div className="relative w-8 h-8">
+                    <Image
+                      src="/images/logo.svg"
+                      alt="Leverage Journal Logo"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                   <span className="text-white font-bold text-lg">
                     <span className="animate-gradient">Leverage</span> <span className="animate-gradient">Journal</span><span className="text-transparent">™</span>
@@ -1011,7 +1061,7 @@ export default function Home() {
                   Legacy Built. Results Engineered.
                 </p>
                 <p className="text-gray-500 text-xs max-w-xs">
-                  &copy; 2024 Leverage Journal. All rights reserved.
+                  &copy; 2025 Leverage Journal. All rights reserved.
                 </p>
               </div>
 
