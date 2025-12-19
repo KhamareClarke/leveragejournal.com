@@ -12,14 +12,14 @@ export const getStripe = () => {
   return stripePromise;
 };
 
-export const createCheckoutSession = async (userId?: string, email?: string) => {
+export const createCheckoutSession = async (userId?: string, email?: string, cartItems?: Array<{ id: string; name: string; price: number; quantity: number; image?: string }>) => {
   try {
     const response = await fetch('/api/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId, email }),
+      body: JSON.stringify({ userId, email, cartItems }),
     });
 
     if (!response.ok) {

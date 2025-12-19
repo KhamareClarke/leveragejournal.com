@@ -22,9 +22,8 @@ export default function CartPage() {
     
     try {
       setIsProcessing(true);
-      // For now, we'll checkout with the first item (journal)
-      // In the future, you can modify the API to handle multiple items
-      await createCheckoutSession(user?.id, user?.email);
+      // Pass cart items to checkout so quantities are included
+      await createCheckoutSession(user?.id, user?.email, items);
     } catch (error: any) {
       console.error('Checkout error:', error);
       alert(error.message || 'Failed to start checkout. Please try again.');
