@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Leverage Journal™ - Master Edition</title>
+    <link rel="stylesheet" href="/leverage/css/journal.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+
+<!-- ====================================== -->
+<!-- FRONT MATTER -->
+<!-- ====================================== -->
+
+<!-- PAGE 001: TITLE PAGE -->
+<div class="page title-page flex flex-col items-center justify-center">
+    <div class="crown-icon mb-8">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+            <path d="M5 16L3 7L8.5 10L12 4L15.5 10L21 7L19 16H5Z" stroke="var(--gold)" stroke-width="2" fill="var(--gold)" opacity="0.1"/>
+        </svg>
+    </div>
+    
+    <h1 class="font-serif gold-gradient text-center mb-6" style="font-size: 4rem; line-height: 0.9; letter-spacing: -0.02em;">
+        THE LEVERAGE<br>JOURNAL™
+    </h1>
+    
+    <div class="gold-line mb-8" style="width: 300px;"></div>
+    
+    <h2 class="text-center uppercase tracking-widest mb-6" style="color: var(--gray-light); font-size: 1.2rem; font-weight: 300;">
+        A Philosophical Framework for Empire Building
+    </h2>
+    
+    <div class="subtitle gold-gradient font-semibold mb-12" style="font-size: 1.5rem; letter-spacing: 0.1em;">
+        PLAN • DO • ACHIEVE
+    </div>
+    
+    <div class="author-section text-center">
+        <p style="color: var(--gray); font-size: 1.1rem; margin-bottom: 0.5rem;">By</p>
+        <p class="gold-gradient font-semibold" style="font-size: 1.3rem;">KHAMARE CLARKE</p>
+    </div>
+    
+    <!-- User Name and Join Date (will be populated by JavaScript) -->
+    <div id="user-info-section" style="margin-top: 2rem; text-align: center; display: none;">
+        <div class="gold-line mb-4" style="width: 200px; margin: 2rem auto 1rem;"></div>
+        <p id="user-name-display" style="color: var(--gold-light); font-size: 1rem; font-weight: 500; margin-bottom: 0.3rem;"></p>
+        <p id="user-join-date-display" style="color: var(--gray); font-size: 0.85rem;"></p>
+    </div>
+    
+</div>
+
+<!-- PAGE 002: COPYRIGHT PAGE -->
+<div class="page copyright-page">
+    <div class="section-icon mb-6">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="var(--gold)" stroke-width="2"/>
+            <path d="M15 9L9 15M9 9L15 15" stroke="var(--gold)" stroke-width="2"/>
+        </svg>
+    </div>
+    
+    <h1 class="philosophy-title mb-8">Publishing Information</h1>
+    
+    <div class="copyright-content" style="line-height: 1.8; color: var(--gray-light);">
+        <p class="mb-6"><strong style="color: var(--gold);">The Leverage Journal™</strong><br>
+        A Philosophical Framework for Empire Building</p>
+        
+        <p class="mb-6">Copyright © 2025 by Khamare Clarke<br>
+        All rights reserved.</p>
+        
+        <p class="mb-6">Published by <strong style="color: var(--gold);">Legacy Leverage Publishing</strong><br>
+        First Edition, 2025</p>
+        
+        <p class="mb-6">No part of this publication may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the publisher, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law.</p>
+        
+        <p class="mb-6">For permission requests, write to the publisher at:<br>
+        <strong style="color: var(--gold);">contact@leveragejournel.com</strong></p>
+        
+        <p class="mb-6">Printed in UK</p>
+        
+        
+        
+    </div>
+    
+    <div class="page-number">001</div>
+    <div class="footer-wisdom">"Excellence is never an accident." — Aristotle</div>
+</div>
+
+<!-- PAGE 003: DEDICATION -->
+<div class="page dedication-page flex flex-col items-center justify-center">
+    <div class="section-icon mb-8">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <!-- Empire Builder Crown -->
+            <path d="M20 70L15 40L30 50L50 20L70 50L85 40L80 70H20Z" stroke="var(--gold)" stroke-width="2.5" fill="var(--gold)" opacity="0.15"/>
+            <!-- Leverage Gears -->
+            <circle cx="35" cy="55" r="8" stroke="var(--gold)" stroke-width="2" fill="none"/>
+            <circle cx="65" cy="55" r="8" stroke="var(--gold)" stroke-width="2" fill="none"/>
+            <!-- Central Diamond -->
+            <path d="M50 45L55 50L50 55L45 50Z" fill="var(--gold)" stroke="var(--gold)" stroke-width="1"/>
+            <!-- Connecting Lines (Systems) -->
+            <path d="M43 50L27 50M57 50L73 50" stroke="var(--gold)" stroke-width="2" opacity="0.7"/>
+            <!-- Foundation Base -->
+            <rect x="25" y="75" width="50" height="4" fill="var(--gold)" opacity="0.3" rx="2"/>
+        </svg>
+    </div>
+    
+    <h1 class="font-serif gold-gradient text-center mb-8" style="font-size: 3rem;">Dedication</h1>
+    
+    <div class="gold-line mb-8" style="width: 200px;"></div>
+    
+    <div class="dedication-text text-center" style="max-width: 500px; line-height: 1.8; color: var(--gray-light);">
+        <p class="mb-6" style="font-size: 1.2rem; color: var(--gold-light);">
+            To every empire builder who refuses to settle for ordinary.
+        </p>
+        
+        <p class="mb-6">
+            To those who understand that greatness is not a destination, but a daily discipline.
+        </p>
+        
+        <p class="mb-6">
+            To the visionaries who see systems where others see chaos, who find leverage where others find limitation.
+        </p>
+        
+        <p class="gold-gradient font-semibold" style="font-size: 1.1rem;">
+            This journal is your companion on the journey from dreamer to empire builder.
+        </p>
+    </div>
+    
+    <div class="page-number">002</div>
+</div>
+
+<!-- PAGE 004: TABLE OF CONTENTS -->
+<div class="page toc-page" id="toc-page" style="padding-bottom: 50mm; padding-top: 0mm;">
+    <div class="section-icon" style="margin-bottom: 0.2rem;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path d="M8 6H21M8 12H21M8 18H21M3 6H3.01M3 12H3.01M3 18H3.01" stroke="var(--gold)" stroke-width="2"/>
+        </svg>
+    </div>
+    
+    <h1 class="philosophy-title mb-2" style="font-size: 1.2rem;">Table of Contents</h1>
+    
+    <div class="toc-content" style="line-height: 1.1; color: var(--gray-light); font-size: 0.55rem;">
+        <div class="toc-section mb-4">
+            <h3 class="gold-gradient mb-2" style="font-size: 0.9rem;">FRONT MATTER</h3>
+            <a href="#page-introduction" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Introduction — What Is The Leverage System <span class="page-ref">004</span></a>
+            <a href="#page-philosophy" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Philosophy — Why Leverage Changes Everything <span class="page-ref">005</span></a>
+            <a href="#page-how-to-use" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">How to Use This Journal <span class="page-ref">006</span></a>
+        </div>
+        
+        <div class="toc-section mb-4">
+            <h3 class="gold-gradient mb-2" style="font-size: 0.9rem;">CHAPTER 1 — VISION</h3>
+            <a href="#chapter-1" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Chapter 1 Divider <span class="page-ref">007</span></a>
+            <a href="#page-law-of-leverage" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">The Law of Leverage <span class="page-ref">008</span></a>
+            <a href="#page-freedom-through-focus" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Freedom Through Focus <span class="page-ref">009</span></a>
+            <a href="#page-goal-timeline" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Goal Timeline Framework <span class="page-ref">010</span></a>
+            <a href="#page-tactical-execution" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Tactical Execution <span class="page-ref">011</span></a>
+            <a href="#page-commitment" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">My Commitment <span class="page-ref">012</span></a>
+            <a href="#page-vision" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">My Vision <span class="page-ref">013</span></a>
+            <a href="#page-why" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">My Why <span class="page-ref">014</span></a>
+            <a href="#page-influences" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">My Influences <span class="page-ref">015</span></a>
+        </div>
+        
+        <div class="toc-section mb-4">
+            <h3 class="gold-gradient mb-2" style="font-size: 0.9rem;">CHAPTER 2 — PLAN</h3>
+            <a href="#chapter-2" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Chapter 2 Divider <span class="page-ref">016</span></a>
+            <a href="#page-12-laws" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">The 12 Laws of Leverage <span class="page-ref">017</span></a>
+            <a href="#chapter-3" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">DO <span class="page-ref">018</span></a>
+            <a href="#chapter-3-daily" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Daily Pages (Days 1-90) <span class="page-ref">019</span></a>
+            <a href="#chapter-3-weekly" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Weekly Reviews <span class="page-ref">Every 7th</span></a>
+        </div>
+        
+        <div class="toc-section mb-4">
+            <h3 class="gold-gradient mb-2" style="font-size: 0.9rem;">CHAPTER 3 — REVIEW</h3>
+            <a href="#chapter-4" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Chapter 3 Divider <span class="page-ref">121</span></a>
+            <a href="#page-progress-analytics" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Progress Analytics <span class="page-ref">122</span></a>
+        </div>
+        
+        <div class="toc-section mb-4">
+            <h3 class="gold-gradient mb-2" style="font-size: 0.9rem;">CHAPTER 4 — LEGACY</h3>
+            <a href="#chapter-5" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Chapter 4 Divider <span class="page-ref">123</span></a>
+            <a href="#page-digital-alchemist" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">The Digital Alchemist <span class="page-ref">124</span></a>
+            <a href="#page-certificate" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Certificate of Completion <span class="page-ref">125</span></a>
+            <a href="#page-guild-invitation" class="toc-item" style="margin-bottom: 0.3rem; display: block; text-decoration: none; color: inherit; cursor: pointer;">Builder's Guild Invitation <span class="page-ref">126</span></a>
+        </div>
+        
+    </div>
+    
+    <div class="page-number">003</div>
+</div>
+
+<!-- PAGE 005: INTRODUCTION - WHAT IS THE LEVERAGE SYSTEM -->
+<div class="page" id="page-introduction">
+    <div class="philosophy-section">
+        <h1 class="philosophy-title" style="color: var(--gold); font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">What Is The Leverage System?</h1>
+        
+        <div class="philosophy-essay" style="color: var(--gray-light); line-height: 1.6; font-size: 0.8rem;">
+            <p style="margin-bottom: 1rem;"><span style="font-size: 2rem; float: left; line-height: 1.8rem; margin-right: 0.4rem; color: var(--gold);">L</span>everage is the art of achieving maximum results with minimum effort. It is the difference between working hard and working smart, between surviving and thriving, between dreaming and building empires.</p>
+            
+            <p style="margin-bottom: 1rem;">The Leverage System is a complete ecosystem that bridges the physical and digital worlds. This journal serves as your analog interface to digital intelligence, where every page connects to powerful app features that amplify your progress.</p>
+            
+            <div style="background: var(--black-card); padding: 1rem; border-radius: 6px; margin: 1.5rem 0; border-left: 3px solid var(--gold);">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 0.6rem; font-size: 0.85rem;">
+                    <div><strong style="color: var(--gold);">📖 JOURNAL</strong> = Mind Discipline</div>
+                    <div><strong style="color: var(--gold);">📱 APP</strong> = Data Intelligence</div>
+                    <div><strong style="color: var(--gold);">🤖 COPILOT</strong> = AI Accountability</div>
+                    <div><strong style="color: var(--gold);">👥 GUILD</strong> = Community Network</div>
+                </div>
+            </div>
+            
+            <p style="margin-bottom: 1rem; text-align: center; font-weight: bold; color: var(--gold);">Together, these create a lifestyle system that makes success systematic.</p>
+        </div>
+    </div>
+    
+    <div class="page-number">004</div>
+    <div class="footer-wisdom">"Knowledge is power." — Francis Bacon</div>
+</div>
+
+<!-- PAGE 006: PHILOSOPHY - WHY LEVERAGE CHANGES EVERYTHING -->
+<div class="page" id="page-philosophy">
+    <div class="philosophy-section">
+        <h1 class="philosophy-title" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.6rem; text-align: center;">Why Leverage Changes Everything</h1>
+        
+        <div class="philosophy-essay" style="color: var(--gray-light); line-height: 1.4; font-size: 0.8rem;">
+            <p style="margin-bottom: 0.3rem;"><span style="font-size: 2rem; float: left; line-height: 1.8rem; margin-right: 0.4rem; color: var(--gold);">I</span>n 1665, Isaac Newton discovered that a small force at the right point could move the world. This principle of leverage extends far beyond physics. It is the fundamental law of achievement.</p>
+            
+            <p style="margin-bottom: 0.3rem;">Consider the greatest empires. They were built by those who worked smartest, not hardest. Alexander leveraged strategy. The Medici leveraged finance. Jobs leveraged design. Each found the right leverage points.</p>
+            
+            <p style="margin-bottom: 0.2rem;">In your life, leverage appears in many forms:</p>
+            
+            <div style="background: var(--black-card); padding: 0.4rem; border-radius: 3px; margin: 0.3rem 0; border-left: 3px solid var(--gold);">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 0.2rem; font-size: 0.85rem;">
+                    <div><strong style="color: var(--gold);">Time:</strong> Systems that work while you sleep</div>
+                    <div><strong style="color: var(--gold);">Knowledge:</strong> Skills that compound over decades</div>
+                    <div><strong style="color: var(--gold);">Network:</strong> Relationships that open doors</div>
+                    <div><strong style="color: var(--gold);">Capital:</strong> Money that generates more money</div>
+                    <div><strong style="color: var(--gold);">Technology:</strong> Tools that amplify capabilities</div>
+                </div>
+            </div>
+            
+            <div style="background: var(--black-card); padding: 0.4rem; border-radius: 2px; margin: 0.3rem 0; border: 1px solid var(--gold-dark);">
+                <p style="color: var(--gold-light); font-style: italic; margin: 0; text-align: center;"><strong>Reflection:</strong> Where could you apply more leverage for 10x results?</p>
+            </div>
+            
+            <p style="margin-bottom: 0.3rem;">This journal teaches you to identify and create leverage. Each practice builds momentum. Each reflection deepens thinking. Each goal becomes a lever for the next level.</p>
+        </div>
+    </div>
+    
+    <div class="page-number">005</div>
+    <div class="footer-wisdom">"Give me a lever and I shall move the world." — Archimedes</div>
+</div>
+
+<!-- PAGE 007: HOW TO USE THIS JOURNAL -->
+<div class="page" id="page-how-to-use">
+    <div class="philosophy-section">
+        <h1 class="philosophy-title" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.6rem; text-align: center;">How to Use This Journal</h1>
+        
+        <div class="philosophy-essay" style="color: var(--gray-light); line-height: 1.4; font-size: 0.8rem;">
+            <p style="margin-bottom: 0.3rem;">This is not a typical journal. It is a systematic approach to transformation. Each section builds upon the previous.</p>
+            
+            <div style="background: var(--black-card); padding: 0.4rem; border-radius: 3px; margin: 0.3rem 0; border-left: 3px solid var(--gold);">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 0.2rem; font-size: 0.85rem;">
+                    <div><strong style="color: var(--gold);">📖 VISION (8-31)</strong></div>
+                    <div style="color: var(--gray-light); margin-left: 1rem;">Define your empire. Clarify your why.</div>
+                    
+                    <div><strong style="color: var(--gold);">🎯 PLAN (32-47)</strong></div>
+                    <div style="color: var(--gray-light); margin-left: 1rem;">Transform vision into strategy.</div>
+                    
+                    <div><strong style="color: var(--gold);">⚡ DO (48-227)</strong></div>
+                    <div style="color: var(--gray-light); margin-left: 1rem;">Execute daily. Track progress. Build momentum.</div>
+                    
+                    <div><strong style="color: var(--gold);">🏆 ACHIEVE (228-231)</strong></div>
+                    <div style="color: var(--gray-light); margin-left: 1rem;">Analyze results. Celebrate victories.</div>
+                    
+                    <div><strong style="color: var(--gold);">👑 LEGACY (232-235)</strong></div>
+                    <div style="color: var(--gray-light); margin-left: 1rem;">Preserve transformation. Join Guild.</div>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--gold); font-size: 1rem; margin: 0.4rem 0 0.2rem 0;">Daily Practice Protocol</h3>
+            
+            <div style="background: var(--black-soft); padding: 0.4rem; border-radius: 2px; margin: 0.3rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 0.1rem; font-size: 0.8rem;">
+                    <div><strong style="color: var(--gold-light);">Morning:</strong> Review vision, set priorities</div>
+                    <div><strong style="color: var(--gold-light);">Evening:</strong> Reflect on progress</div>
+                    <div><strong style="color: var(--gold-light);">Weekly:</strong> Review and planning</div>
+                    <div><strong style="color: var(--gold-light);">Monthly:</strong> Celebrate checkpoints</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-number">006</div>
+    <div class="footer-wisdom">"Success is a system, not an event." — Khamare Clarke</div>
+</div>
+
+<!-- DYNAMIC CONTENT PLACEHOLDER -->
+<!-- The rest of the journal will be generated by JavaScript -->
+<div id="journal-content"></div>
+
+<!-- Back to Table of Contents Button -->
+<a href="#toc-page" id="back-to-toc-btn" class="back-to-toc-btn" title="Back to Table of Contents">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>TOC</span>
+</a>
+
+<!-- Load JavaScript -->
+<script>
+// Test if script loads
+console.log('🔍 HTML: About to load journal-generator.js');
+window.journalScriptLoaded = false;
+</script>
+<script src="/leverage/js/journal-generator.js" onerror="console.error('❌ Failed to load journal-generator.js'); window.journalScriptLoadError = true;"></script>
+<script>
+// Check if script loaded
+setTimeout(function() {
+    console.log('🔍 Checking script load status...');
+    console.log('Script loaded:', window.journalScriptLoaded !== false);
+    console.log('generateMasterJournal exists:', typeof window.generateMasterJournal);
+    console.log('Script load error:', window.journalScriptLoadError);
+    
+    const journalContent = document.getElementById('journal-content');
+    const hasPages = document.querySelectorAll('.page').length;
+    
+    console.log('Pages found:', hasPages);
+    console.log('Journal content children:', journalContent ? journalContent.children.length : 'N/A');
+    
+    if (!hasPages && journalContent && journalContent.children.length === 0) {
+        console.error('❌ JavaScript failed to load - pages not generated');
+        journalContent.innerHTML = '<div style="color: red; text-align: center; padding: 2rem;">Error: JavaScript file failed to load. Please check console for details.</div>';
+    } else if (hasPages) {
+        console.log('✅ Journal pages generated successfully. Total pages:', hasPages);
+    }
+}, 5000); // Increased to 5 seconds
+</script>
+
+<script>
+// Show/hide Back to TOC button based on scroll position
+window.addEventListener('DOMContentLoaded', function() {
+    const backToTocBtn = document.getElementById('back-to-toc-btn');
+    const tocPage = document.getElementById('toc-page');
+    
+    if (!backToTocBtn) {
+        console.error('Back to TOC button not found');
+        return;
+    }
+    
+    if (!tocPage) {
+        console.error('TOC page not found');
+        return;
+    }
+    
+    function handleScroll() {
+        // Show button if we've scrolled past 200px (past the TOC page)
+        if (window.scrollY > 200) {
+            backToTocBtn.classList.add('visible');
+        } else {
+            backToTocBtn.classList.remove('visible');
+        }
+    }
+    
+    // Check on scroll
+    window.addEventListener('scroll', handleScroll);
+    
+    // Check on page load
+    handleScroll();
+    
+    // Also check after a short delay to ensure content is loaded
+    setTimeout(handleScroll, 1000);
+});
+</script>
+<!-- Updated: 2025-11-12 -->
+</body>
+</html>

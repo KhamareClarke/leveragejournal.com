@@ -1,0 +1,41 @@
+{
+  "baseUrl": "https://leveragejournel.vercel.app",
+  "generatedAt": "2025-11-20T22:58:33.336Z",
+  "qrCodes": [
+    {
+      "id": "chapter1",
+      "url": "https://leveragejournel.vercel.app/dashboard/goals",
+      "description": "Access Vision Board",
+      "filename": "qr-chapter1-goals.png",
+      "path": "/leverage/qr-codes/qr-chapter1-goals.png"
+    },
+    {
+      "id": "chapter2",
+      "url": "https://leveragejournel.vercel.app/dashboard/daily",
+      "description": "Access Plan Dashboard",
+      "filename": "qr-chapter2-daily.png",
+      "path": "/leverage/qr-codes/qr-chapter2-daily.png"
+    },
+    {
+      "id": "chapter3",
+      "url": "https://leveragejournel.vercel.app/dashboard",
+      "description": "Sync with AI CoPilot",
+      "filename": "qr-chapter3-dashboard.png",
+      "path": "/leverage/qr-codes/qr-chapter3-dashboard.png"
+    },
+    {
+      "id": "chapter4",
+      "url": "https://leveragejournel.vercel.app/dashboard?tab=stats",
+      "description": "Access Progress Analytics",
+      "filename": "qr-chapter4-stats.png",
+      "path": "/leverage/qr-codes/qr-chapter4-stats.png"
+    },
+    {
+      "id": "chapter5",
+      "url": "https://leveragejournel.vercel.app/dashboard",
+      "description": "Join Builder's Guild",
+      "filename": "qr-chapter5-dashboard.png",
+      "path": "/leverage/qr-codes/qr-chapter5-dashboard.png"
+    }
+  ]
+}

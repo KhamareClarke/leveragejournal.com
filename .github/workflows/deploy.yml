@@ -1,0 +1,49 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Build application
+      run: npm run build
+      env:
+        # WARNING: Hardcoded values - consider using GitHub Secrets for production
+        NEXT_PUBLIC_SUPABASE_URL: https://jmlfvqoholffkegwfsyu.supabase.co
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptbGZ2cW9ob2xmZmtlZ3dmc3l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNjU0NDMsImV4cCI6MjA3Nzg0MTQ0M30.UtJRavqqSNj6k39SI0KBlqF7PcBsSFxHxHuly9ZL5M8
+        # TODO: Add your SUPABASE_SERVICE_ROLE_KEY here or use secrets
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      
+    # Vercel deployment is handled via Vercel CLI
+    # Uncomment below if you want GitHub Actions to deploy to Vercel
+    # You'll need to add VERCEL_TOKEN, ORG_ID, and PROJECT_ID to GitHub Secrets
+    # - name: Deploy to Vercel
+    #   if: github.ref == 'refs/heads/main'
+    #   uses: amondnet/vercel-action@v25
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+    #     vercel-org-id: ${{ secrets.ORG_ID }}
+    #     vercel-project-id: ${{ secrets.PROJECT_ID }}
+    #     vercel-args: '--prod'

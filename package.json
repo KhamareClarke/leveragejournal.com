@@ -1,0 +1,63 @@
+{
+  "name": "leveragejournal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "90-Day Transformation System - Premium goal setting journal with mobile app integration",
+  "author": "Leverage Journal Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KhamareClarke/leveragejournel.git"
+  },
+  "homepage": "https://leveragejournal.com",
+  "bugs": {
+    "url": "https://github.com/KhamareClarke/leveragejournel/issues"
+  },
+  "keywords": [
+    "goal-setting",
+    "productivity",
+    "journal",
+    "transformation",
+    "90-day-system",
+    "habit-formation",
+    "personal-development"
+  ],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "check-tables": "node scripts/check-supabase-tables.js",
+    "check-email": "node scripts/check-email-settings.js",
+    "test-code": "node scripts/test-verification-code.js"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.80.0",
+    "@types/nodemailer": "^7.0.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.553.0",
+    "next": "13.5.1",
+    "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.10",
+    "react": "^18",
+    "react-dom": "^18",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.3.1",
+    "typescript": "^5",
+    "web-vitals": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.3",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5"
+  }
+}

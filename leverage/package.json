@@ -1,0 +1,20 @@
+{
+  "name": "leverage-journal-a5",
+  "version": "1.0.0",
+  "description": "**Plan • Do • Achieve**",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview"
+  },
+  "keywords": [],
+  "author": "Khamare Clarke",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.2.2"
+  }
+}
