@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { CartProvider } from '@/contexts/CartContext'
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
 import CookieConsent from '@/components/CookieConsent'
 
@@ -154,9 +155,11 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <AuthProvider>
-          {children}
-          <ServiceWorkerRegistration />
-          <CookieConsent />
+          <CartProvider>
+            {children}
+            <ServiceWorkerRegistration />
+            <CookieConsent />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

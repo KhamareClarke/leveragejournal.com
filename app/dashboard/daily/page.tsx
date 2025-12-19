@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Save, BookOpen, Heart, Target, CheckCircle, Smile } from 'lucide-react';
@@ -26,13 +26,14 @@ interface JournalEntry {
 export default function DailyPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
-  // Get today's date
+  // Get today's date (always use current date, ignore URL param for security)
   const [today, setToday] = useState(() => {
     if (typeof window !== 'undefined') {
       const now = new Date();
@@ -44,8 +45,28 @@ export default function DailyPage() {
     return '';
   });
 
+  // Get the date from URL (for viewing past entries)
+  const [viewDate, setViewDate] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const dateParam = searchParams.get('date');
+      if (dateParam) {
+        // Validate date format (YYYY-MM-DD)
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (dateRegex.test(dateParam)) {
+          return dateParam;
+        }
+      }
+    }
+    return today;
+  });
+
+  // Check if viewing a past date or future date
+  const isPastDate = viewDate < today;
+  const isFutureDate = viewDate > today;
+  const isToday = viewDate === today;
+
   const [entry, setEntry] = useState<JournalEntry>({
-    entry_date: today,
+    entry_date: viewDate,
     gratitude: '',
     priority_1: '',
     priority_2: '',
@@ -55,6 +76,7 @@ export default function DailyPage() {
     mood: '',
     completed: false,
   });
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   // Redirect to sign-in if not authenticated
   useEffect(() => {
@@ -82,7 +104,15 @@ export default function DailyPage() {
           return;
         }
 
-        const response = await fetch(`/api/journal/entries?date=${today}`, {
+        // Check if date is in the past or future
+        if (isFutureDate) {
+          // Future dates: redirect to today
+          router.push('/dashboard/daily');
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`/api/journal/entries?date=${viewDate}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -91,10 +121,32 @@ export default function DailyPage() {
         if (response.ok) {
           const data = await response.json();
           if (data.entry) {
+            const hasContent = !!(
+              data.entry.gratitude?.trim() ||
+              data.entry.priority_1?.trim() ||
+              data.entry.priority_2?.trim() ||
+              data.entry.priority_3?.trim() ||
+              (data.entry.tasks && Array.isArray(data.entry.tasks) && data.entry.tasks.length > 0) ||
+              data.entry.reflection?.trim() ||
+              data.entry.mood?.trim()
+            );
+            
             setEntry({
               ...data.entry,
               tasks: data.entry.tasks || [],
             });
+            
+            // Set read-only if it's a past date with content, or if it's filled
+            setIsReadOnly(isPastDate || (hasContent && !isToday));
+          } else {
+            // No entry exists
+            if (isPastDate) {
+              // Past date with no entry: read-only (can't create past entries)
+              setIsReadOnly(true);
+            } else {
+              // Today with no entry: can edit
+              setIsReadOnly(false);
+            }
           }
         }
       } catch (error) {
@@ -104,10 +156,10 @@ export default function DailyPage() {
       }
     };
 
-    if (user && today) {
+    if (user && viewDate) {
       loadEntry();
     }
-  }, [user, today]);
+  }, [user, viewDate, today, isPastDate, isFutureDate, isToday, router]);
 
   // Auto-save after 2 seconds of inactivity
   useEffect(() => {
@@ -121,7 +173,7 @@ export default function DailyPage() {
   }, [entry, user, today, loading]);
 
   const handleSave = async (isAutoSave = false) => {
-    if (!user || !today) return;
+    if (!user || !viewDate || isReadOnly || isPastDate || isFutureDate) return;
 
     setSaving(true);
     setError(null);
@@ -144,7 +196,7 @@ export default function DailyPage() {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          entry_date: today,
+          entry_date: viewDate,
           gratitude: entry.gratitude,
           priority_1: entry.priority_1,
           priority_2: entry.priority_2,
@@ -239,7 +291,10 @@ export default function DailyPage() {
                 Daily Journal Entry
               </h1>
               <p className="text-gray-400">
-                {new Date(today).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(viewDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                {isReadOnly && (
+                  <span className="ml-3 text-gray-500">(Read Only)</span>
+                )}
                 {entry.streak && entry.streak > 0 && (
                   <span className="ml-3 text-yellow-400">🔥 {entry.streak} day streak!</span>
                 )}
@@ -251,14 +306,19 @@ export default function DailyPage() {
                   Last saved: {lastSaved.toLocaleTimeString()}
                 </p>
               )}
-              <Button
-                onClick={() => handleSave(false)}
-                disabled={saving}
-                className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
-              >
-                <Save className="w-4 h-4 mr-2" />
-                {saving ? 'Saving...' : 'Save Entry'}
-              </Button>
+              {!isReadOnly && (
+                <Button
+                  onClick={() => handleSave(false)}
+                  disabled={saving || isReadOnly}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {saving ? 'Saving...' : 'Save Entry'}
+                </Button>
+              )}
+              {isReadOnly && (
+                <p className="text-gray-400 text-sm">This entry is read-only</p>
+              )}
             </div>
           </div>
         </div>
@@ -285,9 +345,13 @@ export default function DailyPage() {
             </div>
             <textarea
               value={entry.gratitude || ''}
-              onChange={(e) => setEntry(prev => ({ ...prev, gratitude: e.target.value }))}
+              onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, gratitude: e.target.value }))}
               placeholder="What are you grateful for today?"
-              className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 min-h-[100px] resize-y"
+              disabled={isReadOnly}
+              readOnly={isReadOnly}
+              className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 min-h-[100px] resize-y ${
+                isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+              }`}
             />
           </Card>
 
@@ -301,23 +365,35 @@ export default function DailyPage() {
               <input
                 type="text"
                 value={entry.priority_1 || ''}
-                onChange={(e) => setEntry(prev => ({ ...prev, priority_1: e.target.value }))}
+                onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, priority_1: e.target.value }))}
                 placeholder="Priority 1"
-                className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500"
+                disabled={isReadOnly}
+                readOnly={isReadOnly}
+                className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 ${
+                  isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               />
               <input
                 type="text"
                 value={entry.priority_2 || ''}
-                onChange={(e) => setEntry(prev => ({ ...prev, priority_2: e.target.value }))}
+                onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, priority_2: e.target.value }))}
                 placeholder="Priority 2"
-                className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500"
+                disabled={isReadOnly}
+                readOnly={isReadOnly}
+                className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 ${
+                  isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               />
               <input
                 type="text"
                 value={entry.priority_3 || ''}
-                onChange={(e) => setEntry(prev => ({ ...prev, priority_3: e.target.value }))}
+                onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, priority_3: e.target.value }))}
                 placeholder="Priority 3"
-                className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500"
+                disabled={isReadOnly}
+                readOnly={isReadOnly}
+                className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 ${
+                  isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               />
             </div>
           </Card>
@@ -329,14 +405,16 @@ export default function DailyPage() {
                 <CheckCircle className="w-5 h-5 text-yellow-400 mr-2" />
                 <h2 className="text-xl font-bold text-white">Tasks</h2>
               </div>
-              <Button
-                onClick={addTask}
-                variant="outline"
-                size="sm"
-                className="border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10"
-              >
-                + Add Task
-              </Button>
+              {!isReadOnly && (
+                <Button
+                  onClick={addTask}
+                  variant="outline"
+                  size="sm"
+                  className="border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10"
+                >
+                  + Add Task
+                </Button>
+              )}
             </div>
             <div className="space-y-3">
               {(entry.tasks || []).map((task) => (
@@ -344,26 +422,33 @@ export default function DailyPage() {
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    onChange={(e) => updateTask(task.id, { completed: e.target.checked })}
-                    className="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-500"
+                    onChange={(e) => !isReadOnly && updateTask(task.id, { completed: e.target.checked })}
+                    disabled={isReadOnly}
+                    className={`w-5 h-5 text-yellow-500 rounded focus:ring-yellow-500 ${
+                      isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+                    }`}
                   />
                   <input
                     type="text"
                     value={task.text}
-                    onChange={(e) => updateTask(task.id, { text: e.target.value })}
+                    onChange={(e) => !isReadOnly && updateTask(task.id, { text: e.target.value })}
                     placeholder="Enter task..."
+                    disabled={isReadOnly}
+                    readOnly={isReadOnly}
                     className={`flex-1 bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 ${
                       task.completed ? 'line-through opacity-50' : ''
-                    }`}
+                    } ${isReadOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                   />
-                  <Button
-                    onClick={() => removeTask(task.id)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                  >
-                    ×
-                  </Button>
+                  {!isReadOnly && (
+                    <Button
+                      onClick={() => removeTask(task.id)}
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                    >
+                      ×
+                    </Button>
+                  )}
                 </div>
               ))}
               {(!entry.tasks || entry.tasks.length === 0) && (
@@ -380,9 +465,13 @@ export default function DailyPage() {
             </div>
             <textarea
               value={entry.reflection || ''}
-              onChange={(e) => setEntry(prev => ({ ...prev, reflection: e.target.value }))}
+              onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, reflection: e.target.value }))}
               placeholder="How did today go? What did you learn?"
-              className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 min-h-[150px] resize-y"
+              disabled={isReadOnly}
+              readOnly={isReadOnly}
+              className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 min-h-[150px] resize-y ${
+                isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+              }`}
             />
           </Card>
 
@@ -395,9 +484,13 @@ export default function DailyPage() {
             <input
               type="text"
               value={entry.mood || ''}
-              onChange={(e) => setEntry(prev => ({ ...prev, mood: e.target.value }))}
+              onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, mood: e.target.value }))}
               placeholder="How are you feeling today?"
-              className="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500"
+              disabled={isReadOnly}
+              readOnly={isReadOnly}
+              className={`w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 ${
+                isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+              }`}
             />
           </Card>
 
@@ -411,8 +504,11 @@ export default function DailyPage() {
               <input
                 type="checkbox"
                 checked={entry.completed || false}
-                onChange={(e) => setEntry(prev => ({ ...prev, completed: e.target.checked }))}
-                className="w-6 h-6 text-yellow-500 rounded focus:ring-yellow-500"
+                onChange={(e) => !isReadOnly && setEntry(prev => ({ ...prev, completed: e.target.checked }))}
+                disabled={isReadOnly}
+                className={`w-6 h-6 text-yellow-500 rounded focus:ring-yellow-500 ${
+                  isReadOnly ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               />
             </div>
           </Card>

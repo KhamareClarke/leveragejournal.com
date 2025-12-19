@@ -1,20 +1,53 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Star, ArrowRight, CheckCircle, Target, Zap, TrendingUp, Shield, Truck, Heart, ShoppingBag, ShoppingCart, Menu, X, MessageCircle, LogOut, LayoutDashboard, Calendar, Trophy, Smartphone, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
 import ProductMockup from '@/components/ProductMockup';
+import { createCheckoutSession } from '@/lib/stripe';
 
 export default function Home() {
+  const router = useRouter();
   const { user, loading, signOut } = useAuth();
+  const { addToCart, getTotalItems } = useCart();
   const [showExitIntent, setShowExitIntent] = useState(false);
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [processingButtonId, setProcessingButtonId] = useState<string | null>(null);
+
+  // Handle checkout with button ID to track which button is processing
+  const handleCheckout = async (buttonId?: string) => {
+    try {
+      if (buttonId) {
+        setProcessingButtonId(buttonId);
+      }
+      await createCheckoutSession(user?.id, user?.email);
+      // Note: If redirect is successful, we won't reach here
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      alert(error.message || 'Failed to start checkout. Please try again.');
+      setProcessingButtonId(null);
+    }
+  };
+
+  // Handle add to cart
+  const handleAddToCart = () => {
+    addToCart({
+      id: 'leverage-journal',
+      name: 'Leverage Journal - First Edition A5',
+      price: 1999, // £19.99 in pence
+      quantity: 1,
+      image: '/images/journal-product.png',
+    });
+    router.push('/cart');
+  };
 
   // Structured Data for Reviews
   const reviewsSchema = {
@@ -219,11 +252,14 @@ export default function Home() {
                   </Link>
                 </>
               )}
-              <Button className="relative bg-black border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 font-bold shadow-[0_4px_16px_rgba(241,203,50,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_24px_rgba(241,203,50,0.5)] group overflow-hidden rounded-xl px-4 xl:px-6 py-2 xl:py-2.5 text-xs xl:text-sm backdrop-blur-sm">
+              <Button 
+                onClick={() => handleCheckout('nav-order')}
+                disabled={processingButtonId === 'nav-order'}
+                className="relative bg-black border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 font-bold shadow-[0_4px_16px_rgba(241,203,50,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_24px_rgba(241,203,50,0.5)] group overflow-hidden rounded-xl px-4 xl:px-6 py-2 xl:py-2.5 text-xs xl:text-sm backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#f1cb32]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative flex items-center space-x-1 xl:space-x-2">
-                  <span className="font-semibold hidden xl:inline animate-gradient">Order Now</span>
-                  <span className="font-semibold xl:hidden animate-gradient">Order</span>
+                  <span className="font-semibold hidden xl:inline animate-gradient">{processingButtonId === 'nav-order' ? 'Processing...' : 'Order Now'}</span>
+                  <span className="font-semibold xl:hidden animate-gradient">{processingButtonId === 'nav-order' ? 'Processing...' : 'Order'}</span>
                   <ArrowRight className="w-3 h-3 xl:w-4 xl:h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </Button>
@@ -243,10 +279,16 @@ export default function Home() {
               </button>
               
               {/* Cart Icon */}
-              <button className="relative p-2 text-gray-300 hover:text-yellow-400 transition-all duration-300 rounded-lg hover:bg-yellow-500/10 group">
-                <ShoppingCart className="w-5 h-5 xl:w-6 xl:h-6 text-yellow-400" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-[#f1cb32] to-[#d4a017] text-black text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_2px_8px_rgba(241,203,50,0.4)]">0</span>
-              </button>
+              <Link href="/cart">
+                <button className="relative p-2 text-gray-300 hover:text-yellow-400 transition-all duration-300 rounded-lg hover:bg-yellow-500/10 group">
+                  <ShoppingCart className="w-5 h-5 xl:w-6 xl:h-6 text-yellow-400" />
+                  {getTotalItems() > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-[#f1cb32] to-[#d4a017] text-black text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_2px_8px_rgba(241,203,50,0.4)]">
+                      {getTotalItems()}
+                    </span>
+                  )}
+                </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -386,12 +428,14 @@ export default function Home() {
             {/* CTA Button */}
             <div className="animate-fade-in-delay-2 max-w-lg mx-auto pt-6">
               <Button
+                onClick={() => handleCheckout('hero-cta')}
+                disabled={processingButtonId === 'hero-cta'}
                 size="lg"
-                className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-2xl shadow-[0_16px_48px_rgba(241,203,50,0.3),0_0_32px_rgba(241,203,50,0.15)] hover:shadow-[0_20px_60px_rgba(241,203,50,0.45),0_0_48px_rgba(241,203,50,0.25)] transition-all duration-300 hover:scale-105 text-lg group overflow-hidden"
+                className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-2xl shadow-[0_16px_48px_rgba(241,203,50,0.3),0_0_32px_rgba(241,203,50,0.15)] hover:shadow-[0_20px_60px_rgba(241,203,50,0.45),0_0_48px_rgba(241,203,50,0.25)] transition-all duration-300 hover:scale-105 text-lg group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/20 to-transparent group-hover:animate-shimmer"></div>
                 <span className="flex items-center gap-3 relative z-10">
-                  <span className="font-bold text-white">Get The Journal</span>
+                  <span className="font-bold text-white">{processingButtonId === 'hero-cta' ? 'Processing...' : 'Get The Journal'}</span>
                   <span className="text-xl font-black animate-gradient">£19.99</span>
                 </span>
               </Button>
@@ -489,15 +533,18 @@ export default function Home() {
               
               <div className="space-y-3">
                 <Button 
-                  onClick={() => {
-                    // Close popup when button is clicked (user can navigate from there)
+                  onClick={async () => {
+                    // Close popup when button is clicked
                     setShowExitIntent(false);
                     localStorage.setItem('exit-intent-dismissed', 'true');
                     localStorage.setItem('exit-intent-dismissed-time', Date.now().toString());
+                    // Start checkout
+                    await handleCheckout('exit-intent');
                   }}
-                  className="w-full bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-[#f1cb32] font-bold py-4 rounded-xl shadow-[0_8px_32px_rgba(241,203,50,0.4)] hover:shadow-[0_12px_48px_rgba(241,203,50,0.6)] transition-all duration-300 hover:scale-105 relative group overflow-hidden"
+                  disabled={processingButtonId === 'exit-intent'}
+                  className="w-full bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-[#f1cb32] font-bold py-4 rounded-xl shadow-[0_8px_32px_rgba(241,203,50,0.4)] hover:shadow-[0_12px_48px_rgba(241,203,50,0.6)] transition-all duration-300 hover:scale-105 relative group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="relative z-10">Claim My 50% Discount Now</span>
+                  <span className="relative z-10">{processingButtonId === 'exit-intent' ? 'Processing...' : 'Claim My 50% Discount Now'}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/20 to-transparent group-hover:animate-shimmer"></div>
                 </Button>
                 <button
@@ -577,11 +624,14 @@ export default function Home() {
 
               {/* CTA Button - Desktop Only */}
               <div className="hidden lg:block">
-                <Button className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden">
+                <Button 
+                  onClick={() => handleCheckout('why-works-desktop')}
+                  disabled={processingButtonId === 'why-works-desktop'}
+                  className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
                   <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <span className="flex items-center justify-center gap-4 relative z-10">
-                    <span className="text-white font-black text-xl">Get Started</span>
+                    <span className="text-white font-black text-xl">{processingButtonId === 'why-works-desktop' ? 'Processing...' : 'Get Started'}</span>
                     <span className="text-2xl font-black animate-gradient">£19.99</span>
                     <span className="line-through text-gray-500 text-base font-semibold">£39.99</span>
                   </span>
@@ -615,11 +665,14 @@ export default function Home() {
               
               {/* CTA Button - Mobile Only (appears right after video) */}
               <div className="lg:hidden mt-8">
-                <Button className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden">
+                <Button 
+                  onClick={() => handleCheckout('why-works-mobile')}
+                  disabled={processingButtonId === 'why-works-mobile'}
+                  className="w-full relative bg-gradient-to-r from-black/90 to-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:border-[#f1cb32]/80 hover:bg-[#f1cb32]/5 text-white font-bold py-6 rounded-2xl shadow-[0_24px_80px_rgba(241,203,50,0.4),0_0_48px_rgba(241,203,50,0.2)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.6),0_0_64px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-[1.02] text-lg group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
                   <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <span className="flex items-center justify-center gap-4 relative z-10">
-                    <span className="text-white font-black text-xl">Get Started</span>
+                    <span className="text-white font-black text-xl">{processingButtonId === 'why-works-mobile' ? 'Processing...' : 'Get Started'}</span>
                     <span className="text-2xl font-black animate-gradient">£19.99</span>
                     <span className="line-through text-gray-500 text-base font-semibold">£39.99</span>
                   </span>
@@ -752,13 +805,16 @@ export default function Home() {
 
           {/* CTA Button */}
           <div className="text-center mt-16">
-            <Button className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-full shadow-[0_20px_60px_rgba(241,203,50,0.4),0_0_40px_rgba(241,203,50,0.2),inset_0_2px_0_0_rgba(241,203,50,0.1)] hover:shadow-[0_24px_80px_rgba(241,203,50,0.6),0_0_60px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-105 text-lg group overflow-hidden">
+            <Button 
+              onClick={() => handleCheckout('how-it-works')}
+              disabled={processingButtonId === 'how-it-works'}
+              className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-full shadow-[0_20px_60px_rgba(241,203,50,0.4),0_0_40px_rgba(241,203,50,0.2),inset_0_2px_0_0_rgba(241,203,50,0.1)] hover:shadow-[0_24px_80px_rgba(241,203,50,0.6),0_0_60px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-105 text-lg group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed">
               {/* Animated gold shimmer on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/30 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
               {/* Glossy overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <span className="flex items-center gap-3 relative z-10">
-                <span className="animate-gradient font-black">Get Started Now</span>
+                <span className="animate-gradient font-black">{processingButtonId === 'how-it-works' ? 'Processing...' : 'Get Started Now'}</span>
                 <span className="text-xl font-black animate-gradient">£19.99</span>
                 <span className="line-through opacity-60 text-gray-400 text-sm">£39.99</span>
               </span>
@@ -872,12 +928,15 @@ export default function Home() {
 
           {/* CTA Button */}
           <div className="text-center mt-16 relative z-10">
-            <Button className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-full shadow-[0_20px_60px_rgba(241,203,50,0.4),0_0_40px_rgba(241,203,50,0.2),inset_0_2px_0_0_rgba(241,203,50,0.1)] hover:shadow-[0_24px_80px_rgba(241,203,50,0.6),0_0_60px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-105 text-lg group overflow-hidden">
+            <Button 
+              onClick={() => handleCheckout('testimonials')}
+              disabled={processingButtonId === 'testimonials'}
+              className="relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-12 py-6 rounded-full shadow-[0_20px_60px_rgba(241,203,50,0.4),0_0_40px_rgba(241,203,50,0.2),inset_0_2px_0_0_rgba(241,203,50,0.1)] hover:shadow-[0_24px_80px_rgba(241,203,50,0.6),0_0_60px_rgba(241,203,50,0.3)] transition-all duration-500 hover:scale-105 text-lg group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed">
               {/* Animated gold shimmer on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f1cb32]/30 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
               {/* Glossy overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <span className="relative z-10 text-white">Join <span className="animate-gradient font-black">10,000+</span> Happy Customers</span>
+              <span className="relative z-10 text-white">{processingButtonId === 'testimonials' ? 'Processing...' : <>Join <span className="animate-gradient font-black">10,000+</span> Happy Customers</>}</span>
             </Button>
             <p className="text-center text-gray-400 text-xs mt-4">
               ⭐ Rated 4.9/5 by 10,000+ Customers
@@ -944,6 +1003,7 @@ export default function Home() {
 
               <div>
                 <Button
+                  onClick={handleAddToCart}
                   size="lg"
                   className="w-full relative bg-black/80 backdrop-blur-xl border-2 border-[#f1cb32] hover:bg-[#f1cb32]/10 text-white font-bold px-16 py-8 rounded-full shadow-[0_24px_80px_rgba(241,203,50,0.5),0_0_60px_rgba(241,203,50,0.3),inset_0_2px_0_0_rgba(241,203,50,0.15)] hover:shadow-[0_32px_100px_rgba(241,203,50,0.7),0_0_80px_rgba(241,203,50,0.4)] transition-all duration-500 hover:scale-105 text-2xl group overflow-hidden"
                 >
