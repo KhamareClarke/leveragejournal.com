@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
                   : item.name,
                 images: [imageUrl],
               },
-              unit_amount: 0, // Free for testing - Price in pence (set to 0 for testing)
+              unit_amount: 100, // £1.00 in pence
             },
             quantity: item.quantity,
           };
@@ -69,14 +69,16 @@ export async function POST(request: NextRequest) {
                 description: '90-Day Transformation System - Premium goal setting journal',
                 images: ['https://leveragejournal.com/images/journal-product.png'],
               },
-              unit_amount: 0, // Free for testing - £0.00 in pence
+              unit_amount: 100, // £1.00 in pence
             },
             quantity: 1,
           },
         ];
 
-    // Calculate total price (free for testing)
-    const totalPrice = 0; // Free for testing
+    // Calculate total price
+    const totalPrice = cartItems && cartItems.length > 0
+      ? cartItems.reduce((sum: number, item: { price: number; quantity: number }) => sum + (item.price * item.quantity), 0)
+      : 100; // Default to £1.00 (100 pence) if no cart items
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
