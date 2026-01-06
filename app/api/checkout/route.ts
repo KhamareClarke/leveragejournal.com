@@ -16,6 +16,21 @@ export async function POST(request: NextRequest) {
       apiVersion: '2025-12-15.clover',
     });
 
+    // Get the origin from the request to determine the correct base URL
+    const origin = request.headers.get('origin') || request.headers.get('referer') || '';
+    let baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com';
+    
+    // If we have an origin from the request, use it (for dynamic URL detection)
+    if (origin) {
+      try {
+        const url = new URL(origin);
+        baseUrl = `${url.protocol}//${url.host}`;
+      } catch (e) {
+        // If parsing fails, use the default
+        console.log('Could not parse origin, using default:', baseUrl);
+      }
+    }
+
     const { userId, email, cartItems } = await request.json();
 
     // Build line items from cart items
@@ -39,7 +54,7 @@ export async function POST(request: NextRequest) {
                   : item.name,
                 images: [imageUrl],
               },
-              unit_amount: item.price, // Price in pence
+              unit_amount: 0, // Free for testing - Price in pence (set to 0 for testing)
             },
             quantity: item.quantity,
           };
@@ -54,24 +69,22 @@ export async function POST(request: NextRequest) {
                 description: '90-Day Transformation System - Premium goal setting journal',
                 images: ['https://leveragejournal.com/images/journal-product.png'],
               },
-              unit_amount: 1999, // £19.99 in pence
+              unit_amount: 0, // Free for testing - £0.00 in pence
             },
             quantity: 1,
           },
         ];
 
-    // Calculate total price
-    const totalPrice = cartItems && cartItems.length > 0
-      ? cartItems.reduce((sum: number, item: { price: number; quantity: number }) => sum + (item.price * item.quantity), 0)
-      : 1999;
+    // Calculate total price (free for testing)
+    const totalPrice = 0; // Free for testing
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/cancel`,
+      success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/checkout/cancel`,
       customer_email: email || undefined,
       metadata: {
         userId: userId || '',

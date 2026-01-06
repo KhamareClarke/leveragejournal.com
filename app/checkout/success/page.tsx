@@ -12,9 +12,21 @@ export default function CheckoutSuccess() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // You can verify the session here if needed
+    // Trigger email notification if webhook hasn't fired yet
+    if (sessionId) {
+      // Call API to send confirmation email as fallback
+      fetch('/api/checkout/confirm-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId }),
+      }).catch(err => {
+        console.log('Email notification will be sent via webhook:', err);
+      });
+    }
     setLoading(false);
-  }, []);
+  }, [sessionId]);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -27,11 +39,11 @@ export default function CheckoutSuccess() {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-black">
-            <span className="animate-gradient">Payment Successful!</span>
+            <span className="animate-gradient">Order Confirmed!</span>
           </h1>
           
           <p className="text-xl text-gray-300">
-            Thank you for your purchase. Your Leverage Journal order has been confirmed.
+            Your order has been made and will be delivered very soon!
           </p>
         </div>
 
@@ -43,8 +55,11 @@ export default function CheckoutSuccess() {
           </div>
           
           <div className="pt-4 border-t border-[#f1cb32]/20">
+            <p className="text-lg text-[#f1cb32] font-semibold mb-2">
+              ✅ Your order is confirmed and payment has been received!
+            </p>
             <p className="text-sm text-gray-400">
-              You will receive a confirmation email shortly with your order details and shipping information.
+              We will deliver your Leverage Journal very soon. You will receive a confirmation email with your order details and shipping information.
             </p>
           </div>
         </div>
