@@ -24,8 +24,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Retrieve the checkout session
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    // Retrieve the checkout session with expanded shipping details
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['shipping_details', 'customer_details'],
+    });
 
     if (session.payment_status !== 'paid') {
       return NextResponse.json(
@@ -34,9 +36,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Type assertion for expanded session (shipping_details and customer_details are expanded)
+    const expandedSession = session as any;
+
     // Extract order details
-    const customerEmail = session.customer_email || session.customer_details?.email || '';
-    const customerName = session.customer_details?.name || undefined;
+    const customerEmail = session.customer_email || expandedSession.customer_details?.email || '';
+    const customerName = expandedSession.customer_details?.name || undefined;
     const orderId = session.id;
     const metadata = session.metadata || {};
 
@@ -48,10 +53,10 @@ export async function POST(request: NextRequest) {
     const price = `£${(amountTotal / 100).toFixed(2)}`;
 
     // Get shipping and billing address information
-    const shippingAddress = session.shipping_details?.address || session.customer_details?.shipping?.address || null;
-    const billingAddress = session.customer_details?.address || null;
-    const shippingName = session.shipping_details?.name || session.customer_details?.shipping?.name || null;
-    const phone = session.customer_details?.phone || session.shipping_details?.phone || null;
+    const shippingAddress = expandedSession.shipping_details?.address || expandedSession.customer_details?.shipping?.address || null;
+    const billingAddress = expandedSession.customer_details?.address || null;
+    const shippingName = expandedSession.shipping_details?.name || expandedSession.customer_details?.shipping?.name || null;
+    const phone = expandedSession.customer_details?.phone || expandedSession.shipping_details?.phone || null;
 
     // Format addresses
     const formatAddress = (addr: any) => {

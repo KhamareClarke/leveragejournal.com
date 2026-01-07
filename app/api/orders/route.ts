@@ -43,10 +43,12 @@ export async function GET(request: NextRequest) {
         const price = `£${(amountTotal / 100).toFixed(2)}`;
 
         // Get shipping and billing address information
-        const shippingAddress = session.shipping_details?.address || session.customer_details?.shipping?.address || null;
-        const billingAddress = session.customer_details?.address || null;
-        const shippingName = session.shipping_details?.name || session.customer_details?.shipping?.name || null;
-        const phone = session.customer_details?.phone || session.shipping_details?.phone || null;
+        // Type assertion for expanded session data
+        const expandedSession = session as any;
+        const shippingAddress = expandedSession.shipping_details?.address || expandedSession.customer_details?.shipping?.address || null;
+        const billingAddress = expandedSession.customer_details?.address || null;
+        const shippingName = expandedSession.shipping_details?.name || expandedSession.customer_details?.shipping?.name || null;
+        const phone = expandedSession.customer_details?.phone || expandedSession.shipping_details?.phone || null;
 
         // Format addresses
         const formatAddress = (addr: any) => {
