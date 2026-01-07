@@ -47,6 +47,28 @@ export async function POST(request: NextRequest) {
     const amountTotal = session.amount_total || 0;
     const price = `£${(amountTotal / 100).toFixed(2)}`;
 
+    // Get shipping and billing address information
+    const shippingAddress = session.shipping_details?.address || session.customer_details?.shipping?.address || null;
+    const billingAddress = session.customer_details?.address || null;
+    const shippingName = session.shipping_details?.name || session.customer_details?.shipping?.name || null;
+    const phone = session.customer_details?.phone || session.shipping_details?.phone || null;
+
+    // Format addresses
+    const formatAddress = (addr: any) => {
+      if (!addr) return null;
+      const parts = [];
+      if (addr.line1) parts.push(addr.line1);
+      if (addr.line2) parts.push(addr.line2);
+      if (addr.city) parts.push(addr.city);
+      if (addr.state) parts.push(addr.state);
+      if (addr.postal_code) parts.push(addr.postal_code);
+      if (addr.country) parts.push(addr.country);
+      return parts.length > 0 ? parts.join(', ') : null;
+    };
+
+    const shippingAddressFormatted = formatAddress(shippingAddress);
+    const billingAddressFormatted = formatAddress(billingAddress);
+
     // Send confirmation emails
     if (customerEmail) {
       await sendOrderConfirmationEmail(
@@ -57,6 +79,12 @@ export async function POST(request: NextRequest) {
           price,
           quantity,
           customerName,
+          phone: phone || undefined,
+          shippingAddress: shippingAddressFormatted,
+          shippingAddressRaw: shippingAddress,
+          billingAddress: billingAddressFormatted,
+          billingAddressRaw: billingAddress,
+          shippingName: shippingName || undefined,
         },
         'clarkekhamare@gmail.com' // Admin email
       );

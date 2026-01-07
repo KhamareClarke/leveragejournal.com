@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       limit,
       starting_after: startingAfter,
       status: 'complete', // Only completed/paid sessions
-      expand: ['data.line_items'], // Expand line items to get product details
+      expand: ['data.line_items', 'data.shipping_details', 'data.customer_details'], // Expand to get shipping and customer details
     });
 
     // Format orders with details and filter for Leverage Journal only
@@ -42,10 +42,30 @@ export async function GET(request: NextRequest) {
         const amountTotal = session.amount_total || 0;
         const price = `£${(amountTotal / 100).toFixed(2)}`;
 
+        // Get shipping and billing address information
+        const shippingAddress = session.shipping_details?.address || session.customer_details?.shipping?.address || null;
+        const billingAddress = session.customer_details?.address || null;
+        const shippingName = session.shipping_details?.name || session.customer_details?.shipping?.name || null;
+        const phone = session.customer_details?.phone || session.shipping_details?.phone || null;
+
+        // Format addresses
+        const formatAddress = (addr: any) => {
+          if (!addr) return null;
+          const parts = [];
+          if (addr.line1) parts.push(addr.line1);
+          if (addr.line2) parts.push(addr.line2);
+          if (addr.city) parts.push(addr.city);
+          if (addr.state) parts.push(addr.state);
+          if (addr.postal_code) parts.push(addr.postal_code);
+          if (addr.country) parts.push(addr.country);
+          return parts.length > 0 ? parts.join(', ') : null;
+        };
+
         return {
           orderId: session.id,
           customerEmail: session.customer_email || session.customer_details?.email || 'No email',
-          customerName: session.customer_details?.name || 'Not provided',
+          customerName: session.customer_details?.name || shippingName || 'Not provided',
+          phone: phone || 'Not provided',
           productName,
           quantity,
           price,
@@ -55,6 +75,12 @@ export async function GET(request: NextRequest) {
           status: session.status,
           createdAt: new Date(session.created * 1000).toISOString(),
           metadata: session.metadata || {},
+          // Address information
+          shippingAddress: formatAddress(shippingAddress),
+          shippingAddressRaw: shippingAddress,
+          billingAddress: formatAddress(billingAddress),
+          billingAddressRaw: billingAddress,
+          shippingName: shippingName,
         };
       })
     );

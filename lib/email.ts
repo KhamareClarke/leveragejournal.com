@@ -366,6 +366,12 @@ export async function sendOrderConfirmationEmail(
     price: string;
     quantity: number;
     customerName?: string;
+    phone?: string;
+    shippingAddress?: string | null;
+    shippingAddressRaw?: any;
+    billingAddress?: string | null;
+    billingAddressRaw?: any;
+    shippingName?: string | null;
   },
   adminEmail: string = 'clarkekhamare@gmail.com'
 ) {
@@ -445,11 +451,51 @@ export async function sendOrderConfirmationEmail(
                 <p style="margin: 5px 0;"><strong>Order ID:</strong> ${orderDetails.orderId}</p>
                 <p style="margin: 5px 0;"><strong>Customer Email:</strong> ${customerEmail}</p>
                 <p style="margin: 5px 0;"><strong>Customer Name:</strong> ${orderDetails.customerName || 'Not provided'}</p>
+                ${orderDetails.phone ? `<p style="margin: 5px 0;"><strong>Phone:</strong> ${orderDetails.phone}</p>` : ''}
                 <p style="margin: 5px 0;"><strong>Product:</strong> ${orderDetails.productName}</p>
                 <p style="margin: 5px 0;"><strong>Quantity:</strong> ${orderDetails.quantity}</p>
                 <p style="margin: 5px 0;"><strong>Total Amount:</strong> ${orderDetails.price}</p>
                 <p style="margin: 5px 0;"><strong>Payment Status:</strong> ✅ Paid</p>
               </div>
+              
+              ${orderDetails.shippingAddress || orderDetails.billingAddress ? `
+              <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+                <h3 style="margin: 0 0 15px 0; color: #1a1a1a;">📍 Shipping & Billing Information</h3>
+                ${orderDetails.shippingAddress ? `
+                <div style="margin-bottom: 15px;">
+                  <p style="margin: 0 0 5px 0; font-weight: bold; color: #1a1a1a;">Shipping Address:</p>
+                  ${orderDetails.shippingName && orderDetails.shippingName !== orderDetails.customerName ? `<p style="margin: 0 0 5px 0; color: #666;">Name: ${orderDetails.shippingName}</p>` : ''}
+                  <p style="margin: 0; color: #666; line-height: 1.6;">${orderDetails.shippingAddress}</p>
+                  ${orderDetails.shippingAddressRaw ? `
+                  <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #666;">
+                    ${orderDetails.shippingAddressRaw.line1 ? `<p style="margin: 2px 0;">Street: ${orderDetails.shippingAddressRaw.line1}</p>` : ''}
+                    ${orderDetails.shippingAddressRaw.line2 ? `<p style="margin: 2px 0;">Address Line 2: ${orderDetails.shippingAddressRaw.line2}</p>` : ''}
+                    ${orderDetails.shippingAddressRaw.city ? `<p style="margin: 2px 0;">City: ${orderDetails.shippingAddressRaw.city}</p>` : ''}
+                    ${orderDetails.shippingAddressRaw.state ? `<p style="margin: 2px 0;">State/County: ${orderDetails.shippingAddressRaw.state}</p>` : ''}
+                    ${orderDetails.shippingAddressRaw.postal_code ? `<p style="margin: 2px 0;">Postal Code: ${orderDetails.shippingAddressRaw.postal_code}</p>` : ''}
+                    ${orderDetails.shippingAddressRaw.country ? `<p style="margin: 2px 0;"><strong>Country:</strong> ${orderDetails.shippingAddressRaw.country}</p>` : ''}
+                  </div>
+                  ` : ''}
+                </div>
+                ` : '<p style="margin: 0; color: #999; font-style: italic;">No shipping address provided</p>'}
+                ${orderDetails.billingAddress ? `
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                  <p style="margin: 0 0 5px 0; font-weight: bold; color: #1a1a1a;">Billing Address:</p>
+                  <p style="margin: 0; color: #666; line-height: 1.6;">${orderDetails.billingAddress}</p>
+                  ${orderDetails.billingAddressRaw ? `
+                  <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #666;">
+                    ${orderDetails.billingAddressRaw.line1 ? `<p style="margin: 2px 0;">Street: ${orderDetails.billingAddressRaw.line1}</p>` : ''}
+                    ${orderDetails.billingAddressRaw.line2 ? `<p style="margin: 2px 0;">Address Line 2: ${orderDetails.billingAddressRaw.line2}</p>` : ''}
+                    ${orderDetails.billingAddressRaw.city ? `<p style="margin: 2px 0;">City: ${orderDetails.billingAddressRaw.city}</p>` : ''}
+                    ${orderDetails.billingAddressRaw.state ? `<p style="margin: 2px 0;">State/County: ${orderDetails.billingAddressRaw.state}</p>` : ''}
+                    ${orderDetails.billingAddressRaw.postal_code ? `<p style="margin: 2px 0;">Postal Code: ${orderDetails.billingAddressRaw.postal_code}</p>` : ''}
+                    ${orderDetails.billingAddressRaw.country ? `<p style="margin: 2px 0;"><strong>Country:</strong> ${orderDetails.billingAddressRaw.country}</p>` : ''}
+                  </div>
+                  ` : ''}
+                </div>
+                ` : ''}
+              </div>
+              ` : ''}
               
               <p style="color: #666;">Please process this order and prepare for shipping.</p>
             </div>
@@ -460,7 +506,7 @@ export async function sendOrderConfirmationEmail(
         </body>
         </html>
       `,
-      text: `New Order Received\n\nOrder ID: ${orderDetails.orderId}\nCustomer Email: ${customerEmail}\nCustomer Name: ${orderDetails.customerName || 'Not provided'}\nProduct: ${orderDetails.productName}\nQuantity: ${orderDetails.quantity}\nTotal: ${orderDetails.price}\nPayment Status: Paid\n\nPlease process this order and prepare for shipping.`,
+      text: `New Order Received\n\nOrder ID: ${orderDetails.orderId}\nCustomer Email: ${customerEmail}\nCustomer Name: ${orderDetails.customerName || 'Not provided'}\n${orderDetails.phone ? `Phone: ${orderDetails.phone}\n` : ''}Product: ${orderDetails.productName}\nQuantity: ${orderDetails.quantity}\nTotal: ${orderDetails.price}\nPayment Status: Paid\n\n${orderDetails.shippingAddress ? `Shipping Address:\n${orderDetails.shippingName && orderDetails.shippingName !== orderDetails.customerName ? `Name: ${orderDetails.shippingName}\n` : ''}${orderDetails.shippingAddress}\n${orderDetails.shippingAddressRaw?.country ? `Country: ${orderDetails.shippingAddressRaw.country}\n` : ''}\n` : ''}${orderDetails.billingAddress ? `Billing Address:\n${orderDetails.billingAddress}\n${orderDetails.billingAddressRaw?.country ? `Country: ${orderDetails.billingAddressRaw.country}\n` : ''}\n` : ''}Please process this order and prepare for shipping.`,
     };
 
     const adminInfo = await transporter.sendMail(adminMailOptions);

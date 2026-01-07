@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { ShoppingBag, Mail, Calendar, PoundSterling, Package, Loader2 } from 'lucide-react';
+import { ShoppingBag, Mail, Calendar, PoundSterling, Package, Loader2, MapPin, Phone, Home } from 'lucide-react';
 
 interface Order {
   orderId: string;
   customerEmail: string;
   customerName: string;
+  phone: string;
   productName: string;
   quantity: number;
   price: string;
@@ -17,6 +18,11 @@ interface Order {
   status: string;
   createdAt: string;
   metadata: any;
+  shippingAddress: string | null;
+  shippingAddressRaw: any;
+  billingAddress: string | null;
+  billingAddressRaw: any;
+  shippingName: string | null;
 }
 
 export default function OrdersPage() {
@@ -136,44 +142,104 @@ export default function OrdersPage() {
                 key={order.orderId}
                 className="bg-black/60 backdrop-blur-xl border-2 border-[#f1cb32]/30 p-6 hover:border-[#f1cb32]/50 transition-all"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Order Info */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Package className="w-5 h-5 text-[#f1cb32]" />
-                      <p className="text-sm text-gray-400">Order ID</p>
+                <div className="space-y-4">
+                  {/* Top Row: Order Info, Customer, Product */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Order Info */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Package className="w-5 h-5 text-[#f1cb32]" />
+                        <p className="text-sm text-gray-400">Order ID</p>
+                      </div>
+                      <p className="font-mono text-xs text-white break-all">{order.orderId}</p>
+                      <div className="flex items-center gap-2 mt-3">
+                        <Calendar className="w-4 h-4 text-gray-500" />
+                        <p className="text-xs text-gray-500">{formatDate(order.createdAt)}</p>
+                      </div>
                     </div>
-                    <p className="font-mono text-xs text-white break-all">{order.orderId}</p>
-                    <div className="flex items-center gap-2 mt-3">
-                      <Calendar className="w-4 h-4 text-gray-500" />
-                      <p className="text-xs text-gray-500">{formatDate(order.createdAt)}</p>
+
+                    {/* Customer Info */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-5 h-5 text-[#f1cb32]" />
+                        <p className="text-sm text-gray-400">Customer</p>
+                      </div>
+                      <p className="text-white font-semibold">{order.customerName}</p>
+                      <p className="text-xs text-gray-400 break-all">{order.customerEmail}</p>
+                      {order.phone && order.phone !== 'Not provided' && (
+                        <div className="flex items-center gap-1 mt-1">
+                          <Phone className="w-3 h-3 text-gray-500" />
+                          <p className="text-xs text-gray-400">{order.phone}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Product & Price */}
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-400">Product</p>
+                      <p className="text-white font-semibold">{order.productName}</p>
+                      <div className="flex items-center justify-between mt-3">
+                        <div>
+                          <p className="text-xs text-gray-400">Quantity: {order.quantity}</p>
+                          <p className="text-xs text-gray-400">Status: <span className="text-green-400 capitalize">{order.paymentStatus}</span></p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-black text-[#f1cb32]">{order.price}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Customer Info */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-5 h-5 text-[#f1cb32]" />
-                      <p className="text-sm text-gray-400">Customer</p>
-                    </div>
-                    <p className="text-white font-semibold">{order.customerName}</p>
-                    <p className="text-xs text-gray-400 break-all">{order.customerEmail}</p>
-                  </div>
+                  {/* Address Information */}
+                  {(order.shippingAddress || order.billingAddress) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#f1cb32]/20">
+                      {/* Shipping Address */}
+                      {order.shippingAddress && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-5 h-5 text-[#f1cb32]" />
+                            <p className="text-sm text-gray-400 font-semibold">Shipping Address</p>
+                          </div>
+                          {order.shippingName && order.shippingName !== order.customerName && (
+                            <p className="text-white font-medium text-sm">{order.shippingName}</p>
+                          )}
+                          <p className="text-white text-sm leading-relaxed">{order.shippingAddress}</p>
+                          {order.shippingAddressRaw && (
+                            <div className="mt-2 space-y-1 text-xs text-gray-400">
+                              {order.shippingAddressRaw.country && (
+                                <p>Country: {order.shippingAddressRaw.country}</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
-                  {/* Product & Price */}
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-400">Product</p>
-                    <p className="text-white font-semibold">{order.productName}</p>
-                    <div className="flex items-center justify-between mt-3">
-                      <div>
-                        <p className="text-xs text-gray-400">Quantity: {order.quantity}</p>
-                        <p className="text-xs text-gray-400">Status: <span className="text-green-400 capitalize">{order.paymentStatus}</span></p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-black text-[#f1cb32]">{order.price}</p>
-                      </div>
+                      {/* Billing Address */}
+                      {order.billingAddress && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Home className="w-5 h-5 text-[#f1cb32]" />
+                            <p className="text-sm text-gray-400 font-semibold">Billing Address</p>
+                          </div>
+                          <p className="text-white text-sm leading-relaxed">{order.billingAddress}</p>
+                          {order.billingAddressRaw && (
+                            <div className="mt-2 space-y-1 text-xs text-gray-400">
+                              {order.billingAddressRaw.country && (
+                                <p>Country: {order.billingAddressRaw.country}</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Show message if no address */}
+                      {!order.shippingAddress && !order.billingAddress && (
+                        <div className="col-span-2">
+                          <p className="text-xs text-gray-500 italic">No address information available for this order</p>
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  )}
                 </div>
               </Card>
             ))}
