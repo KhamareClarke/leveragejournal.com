@@ -42,7 +42,7 @@ export default function Home() {
     addToCart({
       id: 'leverage-journal',
       name: 'Leverage Journal - First Edition A5',
-      price: 100, // £1.00 in pence
+      price: 1999, // £19.99 in pence
       quantity: 1,
       image: '/images/journal-product.png',
     });

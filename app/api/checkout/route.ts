@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
                   : item.name,
                 images: [imageUrl],
               },
-              unit_amount: 100, // £1.00 in pence
+              unit_amount: 1999, // £19.99 in pence
             },
             quantity: item.quantity,
           };
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
                 description: '90-Day Transformation System - Premium goal setting journal',
                 images: ['https://leveragejournal.com/images/journal-product.png'],
               },
-              unit_amount: 100, // £1.00 in pence
+              unit_amount: 1999, // £19.99 in pence
             },
             quantity: 1,
           },
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     // Calculate total price
     const totalPrice = cartItems && cartItems.length > 0
       ? cartItems.reduce((sum: number, item: { price: number; quantity: number }) => sum + (item.price * item.quantity), 0)
-      : 100; // Default to £1.00 (100 pence) if no cart items
+      : 1999; // Default to £19.99 (1999 pence) if no cart items
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
