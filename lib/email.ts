@@ -523,7 +523,146 @@ export async function sendOrderConfirmationEmail(
   }
 }
 
+export async function sendMilestoneReminder(
+  email: string,
+  userName: string,
+  goalTitle: string,
+  milestones: Array<{ title: string; due_date?: string; completed: boolean }>,
+  userId: string | null = null
+) {
+  const subject = '🎯 Milestone Reminder - Don\'t miss your goals!';
+  
+  try {
+    // Filter incomplete milestones with due dates
+    const upcomingMilestones = milestones
+      .filter(m => !m.completed && m.due_date)
+      .sort((a, b) => {
+        const dateA = a.due_date ? new Date(a.due_date).getTime() : Infinity;
+        const dateB = b.due_date ? new Date(b.due_date).getTime() : Infinity;
+        return dateA - dateB;
+      })
+      .slice(0, 5); // Show max 5 upcoming milestones
 
+    if (upcomingMilestones.length === 0) {
+      return { success: false, message: 'No upcoming milestones' };
+    }
 
+    const milestonesHtml = upcomingMilestones.map(milestone => {
+      const dueDate = milestone.due_date ? new Date(milestone.due_date) : null;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const dueDateOnly = dueDate ? new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate()) : null;
+      
+      let statusText = '';
+      let statusColor = '#fbbf24';
+      let daysUntil = 0;
+      
+      if (dueDateOnly) {
+        daysUntil = Math.ceil((dueDateOnly.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysUntil < 0) {
+          statusText = `Overdue by ${Math.abs(daysUntil)} day${Math.abs(daysUntil) !== 1 ? 's' : ''}`;
+          statusColor = '#ef4444';
+        } else if (daysUntil === 0) {
+          statusText = 'Due today!';
+          statusColor = '#f59e0b';
+        } else if (daysUntil === 1) {
+          statusText = 'Due tomorrow';
+          statusColor = '#f59e0b';
+        } else if (daysUntil <= 7) {
+          statusText = `Due in ${daysUntil} days`;
+          statusColor = '#fbbf24';
+        } else {
+          statusText = `Due in ${daysUntil} days`;
+          statusColor = '#10b981';
+        }
+      }
 
+      return `
+        <div style="margin: 15px 0; padding: 15px; background: #f9fafb; border-radius: 8px; border-left: 4px solid ${statusColor};">
+          <h3 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 16px;">${milestone.title}</h3>
+          <p style="margin: 0; color: #666; font-size: 14px;">
+            <strong style="color: ${statusColor};">${statusText}</strong>
+            ${dueDate ? ` • ${dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : ''}
+          </p>
+        </div>
+      `;
+    }).join('');
+
+    const mailOptions = {
+      from: `"Leverage Journal" <${process.env.EMAIL_USER || 'khamareclarke@gmail.com'}>`,
+      to: email,
+      subject,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <style>${emailStyles}</style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">🎯 Milestone Reminder</h1>
+            </div>
+            <div class="content">
+              <h2 style="color: #1a1a1a; margin-top: 0;">Hi ${userName || 'there'}!</h2>
+              <p>You have upcoming milestones for your goal: <strong>${goalTitle}</strong></p>
+              <p style="color: #666;">Don't let these important deadlines slip by! Take action today. 💪</p>
+              ${milestonesHtml}
+              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/dashboard/goals" class="button">View Goals & Milestones</a>
+              <p style="color: #999; font-size: 12px; margin-top: 30px;">
+                This is an automated reminder. You can manage your email preferences in your account settings.
+              </p>
+            </div>
+            <div class="footer">
+              <p>© 2024 Leverage Journal™. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      text: `Milestone Reminder - Leverage Journal\n\nHi ${userName || 'there'}!\n\nYou have upcoming milestones for your goal: ${goalTitle}\n\n${upcomingMilestones.map(m => {
+        const dueDate = m.due_date ? new Date(m.due_date) : null;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dueDateOnly = dueDate ? new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate()) : null;
+        let statusText = '';
+        if (dueDateOnly) {
+          const daysUntil = Math.ceil((dueDateOnly.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          if (daysUntil < 0) {
+            statusText = `Overdue by ${Math.abs(daysUntil)} day${Math.abs(daysUntil) !== 1 ? 's' : ''}`;
+          } else if (daysUntil === 0) {
+            statusText = 'Due today!';
+          } else if (daysUntil === 1) {
+            statusText = 'Due tomorrow';
+          } else {
+            statusText = `Due in ${daysUntil} days`;
+          }
+        }
+        return `${m.title} - ${statusText}${dueDate ? ` (${dueDate.toLocaleDateString()})` : ''}`;
+      }).join('\n')}\n\nVisit: ${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/dashboard/goals`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    
+    // Log successful email
+    await logEmail(email, 'milestone_reminder', subject, userName, userId, info.messageId || null, 'sent', null, { 
+      goalTitle,
+      milestonesCount: upcomingMilestones.length 
+    });
+    
+    return { success: true, messageId: info.messageId };
+  } catch (error: any) {
+    console.error('Milestone reminder email error:', error);
+    
+    // Log failed email
+    await logEmail(email, 'milestone_reminder', subject, userName, userId, null, 'failed', error.message, { 
+      goalTitle,
+      milestonesCount: milestones.length 
+    });
+    
+    throw new Error(`Failed to send email: ${error.message}`);
+  }
+}
 

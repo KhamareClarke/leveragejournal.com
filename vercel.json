@@ -23,6 +23,14 @@
     {
       "path": "/api/reminders/weekly-review",
       "schedule": "0 2 * * 1"
+    },
+    {
+      "path": "/api/reminders/milestones",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/reminders/milestones",
+      "schedule": "0 21 * * *"
     }
   ]
 }
