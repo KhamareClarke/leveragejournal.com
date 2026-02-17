@@ -71,7 +71,7 @@ export async function GET() {
     orders.sort((a, b) => b.date.localeCompare(a.date));
 
     const emailsOnly = orders.map((o) => o.email);
-    const uniqueEmails = [...new Set(emailsOnly)];
+    const uniqueEmails = Array.from(new Set(emailsOnly));
 
     return NextResponse.json({
       total: orders.length,
