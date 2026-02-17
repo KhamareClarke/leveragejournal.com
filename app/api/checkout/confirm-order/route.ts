@@ -36,10 +36,8 @@ export async function POST(request: NextRequest) {
 
     console.log('[Confirm-order] Processing sessionId:', sessionId);
 
-    // Retrieve the checkout session with expanded shipping details
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['shipping_details', 'customer_details'],
-    });
+    // Retrieve without expand – this Stripe API version does not allow expanding shipping_details/customer_details on retrieve
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status !== 'paid') {
       return NextResponse.json(
@@ -48,7 +46,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Type assertion for expanded session (shipping_details and customer_details are expanded)
     const expandedSession = session as any;
 
     // Extract order details
