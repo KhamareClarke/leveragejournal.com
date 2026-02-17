@@ -11,6 +11,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // In production, email requires env vars (Gmail SMTP)
+    const isVercel = !!process.env.VERCEL;
+    if (isVercel && (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)) {
+      console.error('[Confirm-order] EMAIL_USER or EMAIL_PASS not set on Vercel – order emails will not send. Set them in Vercel → Project → Settings → Environment Variables.');
+      return NextResponse.json(
+        { error: 'Email not configured. Set EMAIL_USER and EMAIL_PASS in Vercel environment variables.' },
+        { status: 503 }
+      );
+    }
+
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2025-12-15.clover',
     });
@@ -23,6 +33,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    console.log('[Confirm-order] Processing sessionId:', sessionId);
 
     // Retrieve the checkout session with expanded shipping details
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
@@ -74,9 +86,9 @@ export async function POST(request: NextRequest) {
     const shippingAddressFormatted = formatAddress(shippingAddress);
     const billingAddressFormatted = formatAddress(billingAddress);
 
-    // Send confirmation emails
+    // Send confirmation emails (admin is sent first so you always get the order email)
     if (customerEmail) {
-      await sendOrderConfirmationEmail(
+      const emailResult = await sendOrderConfirmationEmail(
         customerEmail,
         {
           orderId,
@@ -94,9 +106,16 @@ export async function POST(request: NextRequest) {
         'clarkekhamare@gmail.com' // Admin email
       );
 
+      if (emailResult.adminMessageId) {
+        console.log('[Confirm-order] Admin email sent for order', orderId);
+      } else {
+        console.error('[Confirm-order] Admin email was NOT sent for order', orderId, '- check Vercel logs and EMAIL_USER/EMAIL_PASS.');
+      }
+
       return NextResponse.json({ 
-        success: true, 
-        message: 'Order confirmation emails sent' 
+        success: !!emailResult.adminMessageId, 
+        message: emailResult.adminMessageId ? 'Order confirmation emails sent' : 'Order recorded but email delivery failed',
+        adminEmailSent: !!emailResult.adminMessageId,
       });
     } else {
       return NextResponse.json(

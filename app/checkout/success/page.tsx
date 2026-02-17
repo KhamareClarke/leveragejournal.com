@@ -12,20 +12,31 @@ export default function CheckoutSuccess() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Trigger email notification if webhook hasn't fired yet
-    if (sessionId) {
-      // Call API to send confirmation email as fallback
-      fetch('/api/checkout/confirm-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ sessionId }),
-      }).catch(err => {
-        console.log('Email notification will be sent via webhook:', err);
-      });
+    if (!sessionId) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    (async () => {
+      try {
+        const res = await fetch('/api/checkout/confirm-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          console.error('[Checkout Success] confirm-order failed:', res.status, data?.error || data);
+          return;
+        }
+        if (data.adminEmailSent === false) {
+          console.warn('[Checkout Success] Order recorded but admin email was not sent. Check Vercel env: EMAIL_USER, EMAIL_PASS.');
+        }
+      } catch (err) {
+        console.error('[Checkout Success] confirm-order request failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [sessionId]);
 
   return (

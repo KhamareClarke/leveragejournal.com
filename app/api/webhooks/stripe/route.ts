@@ -76,9 +76,9 @@ export async function POST(request: NextRequest) {
       const shippingAddressFormatted = formatAddress(shippingAddress);
       const billingAddressFormatted = formatAddress(billingAddress);
 
-      // Send confirmation emails
+      // Send confirmation emails (admin is sent first in sendOrderConfirmationEmail)
       if (customerEmail) {
-        await sendOrderConfirmationEmail(
+        const emailResult = await sendOrderConfirmationEmail(
           customerEmail,
           {
             orderId,
@@ -93,12 +93,15 @@ export async function POST(request: NextRequest) {
             billingAddressRaw: billingAddress,
             shippingName: shippingName || undefined,
           },
-          'clarkekhamare@gmail.com' // Admin email
+          'clarkekhamare@gmail.com'
         );
-        
-        console.log(`Order confirmation emails sent for order ${orderId}`);
+        if (emailResult.adminMessageId) {
+          console.log('[Webhook] Order confirmation emails sent for order', orderId);
+        } else {
+          console.error('[Webhook] Admin email was NOT sent for order', orderId, '- check EMAIL_USER/EMAIL_PASS on Vercel.');
+        }
       } else {
-        console.warn(`No customer email found for order ${orderId}`);
+        console.warn('[Webhook] No customer email found for order', orderId);
       }
     } catch (error: any) {
       console.error('Error processing order confirmation:', error);

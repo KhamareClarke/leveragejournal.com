@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { ShoppingBag, Mail, Calendar, PoundSterling, Package, Loader2, MapPin, Phone, Home } from 'lucide-react';
+import { ShoppingBag, Mail, Calendar, PoundSterling, Package, Loader2, MapPin, Phone, Home, Send } from 'lucide-react';
 
 interface Order {
   orderId: string;
@@ -29,6 +29,9 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sendingEmails, setSendingEmails] = useState(false);
+  const [emailResult, setEmailResult] = useState<{ sent: number; failed: number; total: number } | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -68,6 +71,27 @@ export default function OrdersPage() {
   const totalRevenue = orders.reduce((sum, order) => sum + order.amountTotal, 0);
   const totalOrders = orders.length;
 
+  const sendAllOrderEmails = async () => {
+    if (sendingEmails) return;
+    setSendingEmails(true);
+    setEmailResult(null);
+    setEmailError(null);
+    try {
+      const res = await fetch('/api/orders/send-all-emails', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'Failed to send emails');
+      setEmailResult({
+        sent: data.sent ?? 0,
+        failed: data.failed ?? 0,
+        total: data.leverageJournalProcessed ?? 0,
+      });
+    } catch (err: any) {
+      setEmailError(err.message || 'Failed to send emails');
+    } finally {
+      setSendingEmails(false);
+    }
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -99,12 +123,42 @@ export default function OrdersPage() {
     <main className="min-h-screen bg-black text-white p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
-            <span className="animate-gradient">Leverage Journal Orders</span>
-          </h1>
-          <p className="text-gray-400">All Leverage Journal orders only</p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
+              <span className="animate-gradient">Leverage Journal Orders</span>
+            </h1>
+            <p className="text-gray-400">All Leverage Journal orders only</p>
+          </div>
+          {orders.length > 0 && (
+            <button
+              onClick={sendAllOrderEmails}
+              disabled={sendingEmails}
+              className="inline-flex items-center justify-center gap-2 bg-[#f1cb32] text-black font-bold px-6 py-3 rounded-xl hover:bg-[#d4a017] disabled:opacity-60 disabled:cursor-not-allowed transition-all shrink-0"
+            >
+              {sendingEmails ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Send className="w-5 h-5" />
+              )}
+              {sendingEmails ? 'Sending emails…' : 'Send emails for all orders'}
+            </button>
+          )}
         </div>
+        {emailError && (
+          <div className="mb-6 p-4 rounded-xl bg-red-950/40 border-2 border-red-500/50 text-center">
+            <p className="text-red-400 font-semibold">{emailError}</p>
+          </div>
+        )}
+        {emailResult && (
+          <div className="mb-6 p-4 rounded-xl bg-black/60 border-2 border-[#f1cb32]/30 text-center">
+            <p className="text-[#f1cb32] font-semibold">
+              Emails sent: {emailResult.sent} of {emailResult.total}
+              {emailResult.failed > 0 && <span className="text-amber-400"> ({emailResult.failed} failed)</span>}
+            </p>
+            <p className="text-sm text-gray-400 mt-1">You and each customer should receive the order confirmation emails.</p>
+          </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">

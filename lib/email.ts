@@ -376,56 +376,11 @@ export async function sendOrderConfirmationEmail(
   adminEmail: string = 'clarkekhamare@gmail.com'
 ) {
   const subject = '✅ Order Confirmed - Leverage Journal';
-  
+  let customerMessageId: string | null = null;
+  let adminMessageId: string | null = null;
+
+  // Send to ADMIN first so you always receive order notifications even if customer email fails
   try {
-    // Send to customer
-    const customerMailOptions = {
-      from: `"Leverage Journal" <${process.env.EMAIL_USER || 'khamareclarke@gmail.com'}>`,
-      to: customerEmail,
-      subject,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <style>${emailStyles}</style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">✅ Order Confirmed!</h1>
-            </div>
-            <div class="content">
-              <h2 style="color: #1a1a1a; margin-top: 0;">Hi ${orderDetails.customerName || 'there'}!</h2>
-              <p>Thank you for your purchase! Your order has been confirmed and payment has been received.</p>
-              
-              <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #fbbf24;">
-                <h3 style="margin: 0 0 10px 0; color: #1a1a1a;">Order Details</h3>
-                <p style="margin: 5px 0;"><strong>Order ID:</strong> ${orderDetails.orderId}</p>
-                <p style="margin: 5px 0;"><strong>Product:</strong> ${orderDetails.productName}</p>
-                <p style="margin: 5px 0;"><strong>Quantity:</strong> ${orderDetails.quantity}</p>
-                <p style="margin: 5px 0;"><strong>Total:</strong> ${orderDetails.price}</p>
-              </div>
-              
-              <p style="color: #666; font-weight: bold;">🚚 Your order will be delivered very soon!</p>
-              <p style="color: #999; font-size: 12px; margin-top: 30px;">
-                We'll send you another email with tracking information once your order ships.
-              </p>
-            </div>
-            <div class="footer">
-              <p>© 2024 Leverage Journal™. All rights reserved.</p>
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
-      text: `Order Confirmed - Leverage Journal\n\nHi ${orderDetails.customerName || 'there'}!\n\nThank you for your purchase! Your order has been confirmed.\n\nOrder Details:\nOrder ID: ${orderDetails.orderId}\nProduct: ${orderDetails.productName}\nQuantity: ${orderDetails.quantity}\nTotal: ${orderDetails.price}\n\nYour order will be delivered very soon!`,
-    };
-
-    const customerInfo = await transporter.sendMail(customerMailOptions);
-    console.log('Customer confirmation email sent:', customerInfo.messageId);
-
-    // Send to admin
     const adminMailOptions = {
       from: `"Leverage Journal" <${process.env.EMAIL_USER || 'khamareclarke@gmail.com'}>`,
       to: adminEmail,
@@ -510,17 +465,74 @@ export async function sendOrderConfirmationEmail(
     };
 
     const adminInfo = await transporter.sendMail(adminMailOptions);
-    console.log('Admin notification email sent:', adminInfo.messageId);
-    
-    return { 
-      success: true, 
-      customerMessageId: customerInfo.messageId,
-      adminMessageId: adminInfo.messageId
-    };
-  } catch (error: any) {
-    console.error('Order confirmation email error:', error);
-    throw new Error(`Failed to send order confirmation email: ${error.message}`);
+    adminMessageId = adminInfo.messageId || null;
+    console.log('[Order Email] Admin notification sent to', adminEmail, 'messageId:', adminMessageId);
+  } catch (adminError: any) {
+    const errMsg = adminError?.message || String(adminError);
+    console.error('[Order Email] FAILED to send admin email to', adminEmail, errMsg);
+    // Don't throw - still try to send to customer
+    return { success: false, customerMessageId: null, adminMessageId: null, lastError: errMsg };
   }
+
+  // Send to customer
+  try {
+    const customerMailOptions = {
+      from: `"Leverage Journal" <${process.env.EMAIL_USER || 'khamareclarke@gmail.com'}>`,
+      to: customerEmail,
+      subject,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <style>${emailStyles}</style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">✅ Order Confirmed!</h1>
+            </div>
+            <div class="content">
+              <h2 style="color: #1a1a1a; margin-top: 0;">Hi ${orderDetails.customerName || 'there'}!</h2>
+              <p>Thank you for your purchase! Your order has been confirmed and payment has been received.</p>
+              
+              <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #fbbf24;">
+                <h3 style="margin: 0 0 10px 0; color: #1a1a1a;">Order Details</h3>
+                <p style="margin: 5px 0;"><strong>Order ID:</strong> ${orderDetails.orderId}</p>
+                <p style="margin: 5px 0;"><strong>Product:</strong> ${orderDetails.productName}</p>
+                <p style="margin: 5px 0;"><strong>Quantity:</strong> ${orderDetails.quantity}</p>
+                <p style="margin: 5px 0;"><strong>Total:</strong> ${orderDetails.price}</p>
+              </div>
+              
+              <p style="color: #666; font-weight: bold;">🚚 Your order will be delivered very soon!</p>
+              <p style="color: #999; font-size: 12px; margin-top: 30px;">
+                We'll send you another email with tracking information once your order ships.
+              </p>
+            </div>
+            <div class="footer">
+              <p>© 2024 Leverage Journal™. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      text: `Order Confirmed - Leverage Journal\n\nHi ${orderDetails.customerName || 'there'}!\n\nThank you for your purchase! Your order has been confirmed.\n\nOrder Details:\nOrder ID: ${orderDetails.orderId}\nProduct: ${orderDetails.productName}\nQuantity: ${orderDetails.quantity}\nTotal: ${orderDetails.price}\n\nYour order will be delivered very soon!`,
+    };
+
+    const customerInfo = await transporter.sendMail(customerMailOptions);
+    customerMessageId = customerInfo.messageId || null;
+    console.log('[Order Email] Customer confirmation sent to', customerEmail, 'messageId:', customerMessageId);
+  } catch (customerError: any) {
+    console.error('[Order Email] FAILED to send customer email to', customerEmail, customerError?.message || customerError);
+    // Admin was already sent; don't throw
+  }
+
+  return { 
+    success: !!adminMessageId, 
+    customerMessageId,
+    adminMessageId,
+    lastError: undefined,
+  };
 }
 
 export async function sendMilestoneReminder(
