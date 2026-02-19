@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendOrderConfirmationEmail } from '@/lib/email';
+import { saveOrderToDb } from '@/lib/orders-db';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-12-15.clover',
@@ -75,6 +76,39 @@ export async function POST(request: NextRequest) {
 
       const shippingAddressFormatted = formatAddress(shippingAddress);
       const billingAddressFormatted = formatAddress(billingAddress);
+
+      // Only process Leverage Journal orders (save to DB + email)
+      const isLeverageJournal =
+        productName.toLowerCase().includes('leverage') ||
+        productName.toLowerCase().includes('journal') ||
+        (metadata.product || '').toLowerCase().includes('leverage-journal');
+      if (!isLeverageJournal) {
+        return NextResponse.json({ received: true });
+      }
+
+      // Save order to database
+      const dbResult = await saveOrderToDb({
+        stripe_session_id: orderId,
+        customer_email: customerEmail,
+        customer_name: customerName ?? null,
+        phone: phone ?? null,
+        product_name: productName,
+        quantity,
+        amount_total: amountTotal,
+        price_display: price,
+        currency: (session.currency as string) || 'gbp',
+        shipping_address: shippingAddressFormatted,
+        billing_address: billingAddressFormatted,
+        shipping_address_raw: shippingAddress ?? null,
+        billing_address_raw: billingAddress ?? null,
+        shipping_name: shippingName ?? null,
+        payment_status: 'paid',
+      });
+      if (dbResult.ok) {
+        console.log('[Webhook] Order saved to database:', orderId);
+      } else {
+        console.warn('[Webhook] Order not saved to DB:', dbResult.error);
+      }
 
       // Send confirmation emails (admin is sent first in sendOrderConfirmationEmail)
       if (customerEmail) {

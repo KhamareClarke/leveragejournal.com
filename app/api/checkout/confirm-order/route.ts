@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendOrderConfirmationEmail } from '@/lib/email';
+import { saveOrderToDb } from '@/lib/orders-db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -82,6 +83,30 @@ export async function POST(request: NextRequest) {
 
     const shippingAddressFormatted = formatAddress(shippingAddress);
     const billingAddressFormatted = formatAddress(billingAddress);
+
+    // Save order to database (Leverage Journal)
+    const dbResult = await saveOrderToDb({
+      stripe_session_id: orderId,
+      customer_email: customerEmail,
+      customer_name: customerName ?? null,
+      phone: phone ?? null,
+      product_name: productName,
+      quantity,
+      amount_total: amountTotal,
+      price_display: price,
+      currency: session.currency || 'gbp',
+      shipping_address: shippingAddressFormatted,
+      billing_address: billingAddressFormatted,
+      shipping_address_raw: shippingAddress ?? null,
+      billing_address_raw: billingAddress ?? null,
+      shipping_name: shippingName ?? null,
+      payment_status: 'paid',
+    });
+    if (dbResult.ok) {
+      console.log('[Confirm-order] Order saved to database:', orderId);
+    } else {
+      console.warn('[Confirm-order] Order not saved to DB:', dbResult.error);
+    }
 
     // Send confirmation emails (admin is sent first so you always get the order email)
     if (customerEmail) {
