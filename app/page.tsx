@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { PageLayout } from '@/components/layout/page-layout';
 import { BookOpen, Star, ArrowRight, CheckCircle, Target, Zap, TrendingUp, Shield, Truck, Heart, ShoppingBag, ShoppingCart, Menu, X, MessageCircle, LogOut, LayoutDashboard, Calendar, Trophy, Smartphone, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -138,7 +141,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <PageLayout>
       {/* Structured Data Scripts */}
       <script
         type="application/ld+json"
@@ -149,10 +152,10 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      <main className="min-h-screen bg-black text-white overflow-x-hidden flex-1">
       {/* Top Luxury Strip - Ultra Premium */}
       <div className="fixed top-0 left-0 right-0 z-[60] bg-black/95 backdrop-blur-xl border-b border-[#f1cb32]/20 shadow-[0_4px_24px_rgba(241,203,50,0.15)]">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 md:py-2.5">
+        <Container size="wide" className="py-2 md:py-2.5 !max-w-7xl px-3 sm:px-4">
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 lg:gap-6 text-[10px] sm:text-xs font-medium">
             {/* Luxury badge-style spacing */}
             <div className="flex items-center space-x-1.5 bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 backdrop-blur-sm shadow-[0_2px_8px_rgba(241,203,50,0.1)]">
@@ -174,12 +177,12 @@ export default function Home() {
               <span className="font-medium text-white">Free Shipping</span>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
 
       {/* Ultra-Luxury Navigation Header */}
       <nav className="fixed top-[44px] md:top-[48px] left-0 right-0 z-[55] bg-black/98 backdrop-blur-2xl border-b border-[#f1cb32]/20 shadow-[0_8px_32px_rgba(241,203,50,0.12)]">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <Container size="wide" className="!max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex justify-between items-center py-3 md:py-5">
             {/* Premium Logo - Mobile Optimized */}
             <div className="flex items-center space-x-2 md:space-x-4 group">
@@ -370,7 +373,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </nav>
 
       {/* 🟡 Hero Section - Fully Mobile Responsive */}
@@ -392,7 +395,7 @@ export default function Home() {
           <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-[#f1cb32] rounded-full opacity-35 animate-float-slower"></div>
         </div>
         
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 w-full">
+        <Container size="main" className="relative z-10 w-full !max-w-6xl px-4 sm:px-6 md:px-8">
           <div className="text-center space-y-4 sm:space-y-6">
             {/* Trust Badge */}
             <div className="flex justify-center pt-2 sm:pt-4">
@@ -464,17 +467,17 @@ export default function Home() {
             </div>
 
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Ultra-thin gold divider */}
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#f1cb32]/40 to-transparent"></div>
       
       {/* Stats Section - Full Width */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-black relative">
+      <Section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-black relative">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <Container size="main" className="relative z-10 !max-w-6xl px-4 sm:px-6 md:px-8">
           <div className="bg-black/60 backdrop-blur-xl border border-[#f1cb32]/20 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 shadow-[0_20px_80px_rgba(241,203,50,0.15),inset_0_1px_0_0_rgba(241,203,50,0.05)]">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 md:gap-8 lg:gap-12 xl:gap-20 divide-y sm:divide-y-0 sm:divide-x divide-[#f1cb32]/20">
               <div className="text-center px-2 sm:px-4 md:px-6 pt-0 sm:pt-0 pb-6 sm:pb-0">
@@ -497,8 +500,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Exit Intent Popup */}
       {showExitIntent && (
@@ -575,7 +578,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/4 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-[#f1cb32] opacity-5 blur-[80px] sm:blur-[100px] md:blur-[120px] rounded-full"></div>
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-[#f1cb32] opacity-5 blur-[80px] sm:blur-[100px] md:blur-[120px] rounded-full"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="max-w-[var(--container-wide)] mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
             {/* Content Details - Mobile First */}
             <div className="space-y-6 sm:space-y-8 order-1 lg:order-2">
@@ -692,7 +695,7 @@ export default function Home() {
       {/* Social Proof Bar */}
       <section className="py-6 sm:py-8 bg-black relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="max-w-[var(--container-wide)] mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 text-center">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="flex -space-x-1.5 sm:-space-x-2">
@@ -727,7 +730,7 @@ export default function Home() {
       <section id="how-it-works" className="py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="max-w-[var(--container-wide)] mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-3 sm:px-4 py-1 mb-4 sm:mb-6 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
               <span className="text-[#f1cb32] text-xs sm:text-sm font-semibold">THE SYSTEM</span>
@@ -835,7 +838,7 @@ export default function Home() {
       {/*  Testimonials (What People Are Saying) - Mobile Responsive */}
       <section id="testimonials" className="py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/5 via-transparent to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="max-w-[var(--container-wide)] mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-3 sm:px-4 py-1 mb-4 sm:mb-6 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
               <span className="text-[#f1cb32] text-xs sm:text-sm font-semibold">⭐ CUSTOMER REVIEWS</span>
@@ -954,7 +957,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f1cb32]/8 via-transparent to-transparent"></div>
         {/* Gold spotlight effect - responsive sizing */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] bg-[#f1cb32] opacity-[0.05] blur-[60px] sm:blur-[80px] md:blur-[100px] rounded-full"></div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="max-w-[var(--container-main)] mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Limited Availability Badge - Centered */}
           <div className="flex justify-center mb-8 sm:mb-10 md:mb-12">
             <div className="inline-block bg-[#f1cb32]/10 border border-[#f1cb32]/30 rounded-full px-4 sm:px-6 py-2 sm:py-2.5 shadow-[0_2px_8px_rgba(241,203,50,0.15)]">
@@ -1055,7 +1058,7 @@ export default function Home() {
 
       {/* ⚫ Footer - Modern Clean Design */}
       <footer className="bg-black border-t border-gray-800/50 py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="max-w-[var(--container-wide)] mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 mb-10 sm:mb-12 md:mb-16">
             {/* Product */}
             <div>
@@ -1219,6 +1222,6 @@ export default function Home() {
         )}
       </div>
     </main>
-    </>
+    </PageLayout>
   );
 }
