@@ -258,7 +258,7 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase(),
         password: userPassword, // Use the password from signup
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://leveragejournal.com'}/auth/callback`,
           data: {
             verified_by_code: true,
             name: userName || email.split('@')[0],

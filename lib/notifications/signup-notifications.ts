@@ -2,7 +2,13 @@ import { supabaseAdmin } from '@/lib/supabase-server';
 import { sendTransactionalEmail } from '@/lib/email';
 
 function appUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}${path}`;
+  const raw = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://leveragejournal.com';
+  const lower = raw.toLowerCase();
+  const base =
+    lower.includes('localhost') || lower.includes('127.0.0.1')
+      ? 'https://leveragejournal.com'
+      : raw;
+  return `${base}${path}`;
 }
 
 function firstNameFrom(nameOrEmail: string | null) {
