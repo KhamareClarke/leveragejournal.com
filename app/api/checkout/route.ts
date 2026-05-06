@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { userId, email, cartItems } = await request.json();
+    const referralCode = request.cookies.get('referral_code')?.value || '';
 
     // Build line items from cart items
     const lineItems = cartItems && cartItems.length > 0
@@ -100,6 +101,7 @@ export async function POST(request: NextRequest) {
       billing_address_collection: 'required',
       metadata: {
         userId: userId || '',
+        referral_code: referralCode || '',
         product: 'leverage-journal',
         price: (totalPrice / 100).toFixed(2),
         itemCount: cartItems ? cartItems.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0).toString() : '1',

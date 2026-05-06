@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-server';
+import { awardLoyaltyPoints } from '@/lib/loyalty/loyalty-system';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,6 +31,9 @@ export async function POST(request: NextRequest) {
     }
 
     await supabaseAdmin.from('orders').update({ review_submitted: true }).eq('id', orderId);
+    if (userId) {
+      await awardLoyaltyPoints(userId, 5, 'review', `review:${review.id}`);
+    }
 
     return NextResponse.json({ success: true, review });
   } catch (error: any) {

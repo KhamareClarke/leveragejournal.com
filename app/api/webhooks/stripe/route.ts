@@ -5,6 +5,9 @@ import { saveOrderToDb } from '@/lib/orders-db';
 import { handlePaymentFailureEvent } from '@/lib/notifications/payment-failures';
 import { sendOrderSMS } from '@/lib/sms/send-sms';
 import { supabaseAdmin } from '@/lib/supabase-server';
+import { awardLoyaltyPoints } from '@/lib/loyalty/loyalty-system';
+import { decrementStock } from '@/lib/inventory/stock-management';
+import { applyReferralReward } from '@/lib/referrals/referral-system';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-12-15.clover',
@@ -142,14 +145,27 @@ export async function POST(request: NextRequest) {
         console.warn('[Webhook] No customer email found for order', orderId);
       }
 
-      if (dbResult.ok && phone) {
+      if (dbResult.ok) {
         const { data: insertedOrder } = await supabaseAdmin
           .from('orders')
           .select('id')
           .eq('stripe_session_id', orderId)
           .single();
         if (insertedOrder?.id) {
-          await sendOrderSMS(insertedOrder.id, phone);
+          if (phone) {
+            await sendOrderSMS(insertedOrder.id, phone);
+          }
+          const points = Math.max(1, Math.floor(amountTotal / 100));
+          const userId = metadata.userId || null;
+          if (userId) {
+            await awardLoyaltyPoints(userId, points, 'purchase', `purchase:${orderId}`);
+          }
+          await decrementStock(productName, quantity);
+
+          const referralCode = metadata.referral_code || null;
+          if (referralCode && userId) {
+            await applyReferralReward(referralCode, userId, insertedOrder.id);
+          }
         }
       }
 
