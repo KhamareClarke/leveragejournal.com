@@ -678,3 +678,32 @@ export async function sendMilestoneReminder(
   }
 }
 
+export async function sendTransactionalEmail(params: {
+  email: string;
+  subject: string;
+  html: string;
+  text: string;
+  emailType: string;
+  userId?: string | null;
+  recipientName?: string | null;
+  metadata?: any;
+}) {
+  const { email, subject, html, text, emailType, userId = null, recipientName = null, metadata = null } = params;
+  try {
+    const mailOptions = {
+      from: `"Leverage Journal" <${process.env.EMAIL_USER || 'khamareclarke@gmail.com'}>`,
+      to: email,
+      subject,
+      html,
+      text,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    await logEmail(email, emailType, subject, recipientName, userId, info.messageId || null, 'sent', null, metadata);
+    return { success: true, messageId: info.messageId };
+  } catch (error: any) {
+    await logEmail(email, emailType, subject, recipientName, userId, null, 'failed', error.message, metadata);
+    throw new Error(`Failed to send email: ${error.message}`);
+  }
+}
+

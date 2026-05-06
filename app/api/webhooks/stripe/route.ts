@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendOrderConfirmationEmail } from '@/lib/email';
 import { saveOrderToDb } from '@/lib/orders-db';
+import { handlePaymentFailureEvent } from '@/lib/notifications/payment-failures';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-12-15.clover',
@@ -141,6 +142,14 @@ export async function POST(request: NextRequest) {
       console.error('Error processing order confirmation:', error);
       // Don't return error - we don't want to fail the webhook
       // Stripe will retry if we return an error
+    }
+  }
+
+  if (event.type === 'payment_intent.payment_failed') {
+    try {
+      await handlePaymentFailureEvent(event);
+    } catch (error: any) {
+      console.error('[Webhook] Failed to process payment failure:', error?.message || error);
     }
   }
 

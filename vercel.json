@@ -31,6 +31,22 @@
     {
       "path": "/api/reminders/milestones",
       "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/reminders/welcome",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/check-first-entries",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/cron/check-abandoned-carts",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/check-payment-failures",
+      "schedule": "0 * * * *"
     }
   ]
 }

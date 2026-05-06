@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendWelcomeEmail1 } from '@/lib/notifications/signup-notifications';
 
 // Use service role key for server-side operations (bypasses RLS)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -367,6 +368,15 @@ export async function POST(request: NextRequest) {
 
     // Return session if we have it
     if (session && user) {
+      try {
+        if (user.email) {
+          const name = (user.user_metadata?.name || user.user_metadata?.full_name || null) as string | null;
+          await sendWelcomeEmail1({ id: user.id, email: user.email, name });
+        }
+      } catch (welcomeError: any) {
+        console.error('Failed to send welcome email:', welcomeError?.message || welcomeError);
+      }
+
       return NextResponse.json({
         success: true,
         message: 'Code verified! Account created and signed in successfully.',
