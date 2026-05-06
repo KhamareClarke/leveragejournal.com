@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
 export default function JournalPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [entriesByDay, setEntriesByDay] = useState<Record<number, any>>({});
   const [reviewsByWeek, setReviewsByWeek] = useState<Record<number, any>>({});
@@ -17,6 +17,8 @@ export default function JournalPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       // Preserve the full URL including query parameters
       const currentPath = typeof window !== 'undefined' 
@@ -27,7 +29,7 @@ export default function JournalPage() {
     }
 
     loadEntries();
-  }, [user]);
+  }, [user, authLoading]);
 
   const loadEntries = async () => {
     try {
@@ -88,7 +90,7 @@ export default function JournalPage() {
     }
   }, [entriesByDay, reviewsByWeek, foundations, goals, userName, joinDate, loading]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="animate-spin text-yellow-400 text-4xl">⏳</div>
