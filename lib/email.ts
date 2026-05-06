@@ -79,6 +79,7 @@ export async function sendVerificationCode(email: string, code: string, userId: 
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">Leverage Journal™</h1>
             </div>
             <div class="content">
@@ -145,6 +146,7 @@ export async function sendJournalReminder(email: string, userName: string, userI
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">📔 Daily Reminder</h1>
             </div>
             <div class="content">
@@ -214,6 +216,7 @@ export async function sendGoalProgressReminder(email: string, userName: string, 
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">🎯 Goal Progress</h1>
             </div>
             <div class="content">
@@ -268,6 +271,7 @@ export async function sendWeeklyReviewReminder(email: string, userName: string, 
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">📊 Weekly Review</h1>
             </div>
             <div class="content">
@@ -322,6 +326,7 @@ export async function sendTestEmail(email: string, userName: string, userId: str
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">🧪 Test Email</h1>
             </div>
             <div class="content">
@@ -395,6 +400,7 @@ export async function sendOrderConfirmationEmail(
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">🛒 New Order Received</h1>
             </div>
             <div class="content">
@@ -490,6 +496,7 @@ export async function sendOrderConfirmationEmail(
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">✅ Order Confirmed!</h1>
             </div>
             <div class="content">
@@ -615,6 +622,7 @@ export async function sendMilestoneReminder(
         <body>
           <div class="container">
             <div class="header">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/images/logo.svg" alt="Leverage Journal" style="max-width: 180px; height: auto; display: block; margin: 0 auto 10px auto;" />
               <h1 style="color: #000; margin: 0; font-size: 28px; font-weight: bold;">🎯 Milestone Reminder</h1>
             </div>
             <div class="content">

@@ -47,6 +47,14 @@
     {
       "path": "/api/cron/check-payment-failures",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/send-review-requests",
+      "schedule": "30 9 * * *"
+    },
+    {
+      "path": "/api/cron/send-product-recommendations",
+      "schedule": "0 10 * * *"
     }
   ]
 }

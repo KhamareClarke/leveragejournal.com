@@ -16,6 +16,8 @@ export type OrderRow = {
   billing_address_raw: object | null;
   shipping_name: string | null;
   payment_status?: string;
+  phone_number?: string | null;
+  sms_sent?: boolean;
 };
 
 /**
@@ -44,6 +46,8 @@ export async function saveOrderToDb(order: OrderRow): Promise<{ ok: boolean; err
         billing_address_raw: order.billing_address_raw ?? null,
         shipping_name: order.shipping_name ?? null,
         payment_status: order.payment_status || 'paid',
+        phone_number: order.phone_number ?? order.phone ?? null,
+        sms_sent: order.sms_sent ?? false,
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'stripe_session_id' }

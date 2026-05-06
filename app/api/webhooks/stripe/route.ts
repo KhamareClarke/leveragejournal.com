@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { sendOrderConfirmationEmail } from '@/lib/email';
+import { sendOrderConfirmationEmail, sendTransactionalEmail } from '@/lib/email';
 import { saveOrderToDb } from '@/lib/orders-db';
 import { handlePaymentFailureEvent } from '@/lib/notifications/payment-failures';
+import { sendOrderSMS } from '@/lib/sms/send-sms';
+import { supabaseAdmin } from '@/lib/supabase-server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-12-15.clover',
@@ -93,6 +95,7 @@ export async function POST(request: NextRequest) {
         customer_email: customerEmail,
         customer_name: customerName ?? null,
         phone: phone ?? null,
+        phone_number: phone ?? null,
         product_name: productName,
         quantity,
         amount_total: amountTotal,
@@ -138,6 +141,29 @@ export async function POST(request: NextRequest) {
       } else {
         console.warn('[Webhook] No customer email found for order', orderId);
       }
+
+      if (dbResult.ok && phone) {
+        const { data: insertedOrder } = await supabaseAdmin
+          .from('orders')
+          .select('id')
+          .eq('stripe_session_id', orderId)
+          .single();
+        if (insertedOrder?.id) {
+          await sendOrderSMS(insertedOrder.id, phone);
+        }
+      }
+
+      const adminEmail = process.env.ADMIN_EMAIL;
+      if (adminEmail) {
+        await sendTransactionalEmail({
+          email: adminEmail,
+          subject: `💰 New Order #${orderId} - ${price}`,
+          html: `<p>New order received.</p><p><strong>ID:</strong> ${orderId}<br/><strong>Customer:</strong> ${customerName || 'Unknown'}<br/><strong>Email:</strong> ${customerEmail}<br/><strong>Amount:</strong> ${price}</p><p><a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com'}/dashboard/orders/${orderId}">View order</a></p>`,
+          text: `New Order ${orderId}\nCustomer: ${customerName || 'Unknown'}\nEmail: ${customerEmail}\nAmount: ${price}`,
+          emailType: 'admin_new_order_alert',
+          metadata: { order_id: orderId },
+        });
+      }
     } catch (error: any) {
       console.error('Error processing order confirmation:', error);
       // Don't return error - we don't want to fail the webhook
@@ -148,6 +174,21 @@ export async function POST(request: NextRequest) {
   if (event.type === 'payment_intent.payment_failed') {
     try {
       await handlePaymentFailureEvent(event);
+      const adminEmail = process.env.ADMIN_EMAIL;
+      if (adminEmail) {
+        const intent = event.data.object as Stripe.PaymentIntent;
+        const customerName = intent.last_payment_error?.payment_method?.billing_details?.name || 'Unknown';
+        const amount = `£${((intent.amount || 0) / 100).toFixed(2)}`;
+        const reason = intent.last_payment_error?.message || intent.last_payment_error?.decline_code || 'unknown';
+        await sendTransactionalEmail({
+          email: adminEmail,
+          subject: `⚠️ Payment Failed - ${customerName}`,
+          html: `<p>Payment failure detected.</p><p><strong>Customer:</strong> ${customerName}<br/><strong>Amount:</strong> ${amount}<br/><strong>Reason:</strong> ${reason}</p>`,
+          text: `Payment Failed\nCustomer: ${customerName}\nAmount: ${amount}\nReason: ${reason}`,
+          emailType: 'admin_payment_failed_alert',
+          metadata: { stripe_event_id: event.id },
+        });
+      }
     } catch (error: any) {
       console.error('[Webhook] Failed to process payment failure:', error?.message || error);
     }
