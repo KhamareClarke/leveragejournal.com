@@ -9,11 +9,18 @@ import { awardLoyaltyPoints } from '@/lib/loyalty/loyalty-system';
 import { decrementStock } from '@/lib/inventory/stock-management';
 import { applyReferralReward } from '@/lib/referrals/referral-system';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-15.clover',
-});
-
 export async function POST(request: NextRequest) {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json(
+      { error: 'STRIPE_SECRET_KEY is not configured' },
+      { status: 500 }
+    );
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-12-15.clover',
+  });
+
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
 
