@@ -67,6 +67,10 @@
     {
       "path": "/api/cron/check-stock",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/check-alerts",
+      "schedule": "0 * * * *"
     }
   ]
 }

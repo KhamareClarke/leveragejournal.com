@@ -3,8 +3,10 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { CartProvider } from '@/contexts/CartContext'
+import { NotificationProvider } from '@/contexts/NotificationContext'
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
 import CookieConsent from '@/components/CookieConsent'
+import { PushNotificationRegister } from '@/components/PushNotificationRegister'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -156,9 +158,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <CartProvider>
-            {children}
-            <ServiceWorkerRegistration />
-            <CookieConsent />
+            <NotificationProvider>
+              {children}
+              <ServiceWorkerRegistration />
+              <PushNotificationRegister />
+              <CookieConsent />
+            </NotificationProvider>
           </CartProvider>
         </AuthProvider>
       </body>

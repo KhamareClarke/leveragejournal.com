@@ -1,6 +1,10 @@
+import { sendSMS as sendViaConfig } from '@/lib/sms/twilio-config';
 import { supabaseAdmin } from '@/lib/supabase-server';
 import { sendTransactionalEmail } from '@/lib/email';
-import { sendSMS } from '@/lib/sms';
+
+export async function sendSMS(phoneNumber: string, message: string) {
+  return sendViaConfig(phoneNumber, message);
+}
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://leveragejournal.com';
 
@@ -21,10 +25,7 @@ Questions? Reply HELP
 Reply STOP to unsubscribe`;
 
   try {
-    await sendSMS({
-      to: phoneNumber,
-      body: message,
-    });
+    await sendViaConfig(phoneNumber, message);
 
     await supabaseAdmin.from('orders').update({ sms_sent: true }).eq('id', orderId);
     return { success: true };
